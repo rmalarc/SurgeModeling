@@ -1,0 +1,307 @@
+---
+title: "Storm Surge Model Building"
+author: "Mauricio Alarcon"
+date: "10/25/2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(lubridate)
+library("ggplot2")
+library("dplyr")
+
+library("lme4")
+library("gbm")
+library(knitr)
+library(plotly)
+library(jsonlite)
+```
+
+## Helper Functions
+
+These functions will help us get the data from the tides and currents APIs
+
+```{r}
+
+tideDataUrl <- function(station_id,date0,date1,product,interval="h"){
+  paste0("https://tidesandcurrents.noaa.gov/api/datagetter?product=",product,"&application=NOS.COOPS.TAC.WL&begin_date=",date0,"&end_date=",date1,"&datum=MLLW&station=",station_id,"&time_zone=LST&units=english&format=csv&interval=",interval)
+}
+metDataUrl <- function(station_id,date0,date1,product,application="NOS.COOPS.TAC.MET",interval="h"){ #
+  paste0("https://tidesandcurrents.noaa.gov/api/datagetter?product=",product,"&application=",application,"&begin_date=",date0,"&end_date=",date1,"&station=",station_id,"&time_zone=LST&units=english&format=csv&interval=",interval)
+}
+
+getBuoyDataTrain <- function(date0,date1,station_id,interval="h",events=F){
+  product <- ifelse(interval=="h","hourly_height","water_level")
+  winds_station_id <- ifelse(station_id == 8726667, 8726607, station_id)
+  winds_station_id <- ifelse(station_id == 8518750, 8530973, winds_station_id)
+
+  if (!events){
+    winds_station_id <- ifelse(station_id == 8724580, 8723970, winds_station_id)
+  }
+  winds <- read.csv(url(metDataUrl(winds_station_id,date0,date1,"wind",interval=interval)))
+  if (nrow(winds) ==0){
+    return(data.frame())
+  }
+
+  pred <- read.csv(url(tideDataUrl(station_id,date0,date1,"predictions",interval=interval)))
+  if (nrow(pred) ==0){
+    return(data.frame())
+  }
+  obs <- read.csv(url(tideDataUrl(station_id,date0,date1,product,interval=interval)))
+  if (nrow(obs) ==0){
+    return(data.frame())
+  }
+
+  buoy_data<-merge(merge(pred,obs,by = c("Date.Time")),winds,by = c("Date.Time"))
+  
+  buoy_data$dtm <- as.POSIXct( buoy_data$Date.Time)
+  
+  buoy_data$hour <- hour(buoy_data$dtm)
+  
+  buoy_data$date_serial <- format(buoy_data$dtm,"%Y%m%d")
+  
+  buoy_data$delta <- buoy_data$Water.Level-buoy_data$Prediction
+  
+  buoy_data$Direction <- ifelse(buoy_data$Direction==360,0,buoy_data$Direction)
+
+  buoy_data$quadrant <- as.character((buoy_data$Direction %/% 30)*30)
+
+  
+
+  buoy_data$gust_delta <- buoy_data$Gust - buoy_data$Speed
+  if (nrow(buoy_data) ==0){
+    cat("_")
+    return(data.frame())
+  }
+
+  cat(".")
+  buoy_data$Prediction0 <- c(NA,buoy_data$Prediction[-length(buoy_data$Prediction)])
+  buoy_data$tide_tangent <- buoy_data$Prediction - buoy_data$Prediction0
+  buoy_data$station_id <- as.character(station_id)
+  buoy_data$Direction.1 <- as.character(buoy_data$Direction.1)
+  colnames(buoy_data) <- make.names(names=names(buoy_data), unique=TRUE, allow_ = TRUE)
+  
+  buoy_data
+}
+```
+
+# Getting the Data
+
+```{r}
+setwd("~/Google Drive/CUNY/DATA698/SurgeModeling")
+
+stations_model <- data.frame(id=c("8726607","8726520","8726724","8723970","8725110","8724580","8725520","8723214","8722670","9755371","9752695","8760721","8747437","8736897","8771341","8770613","8726667","8518750")#,8726384,8726412)
+                       ,name=c("Old Port Tampa, FL","St Petersburg, Tampa Bay, FL","Clearwater Beach, FL","Vaca Key, Florida Bay, FL","Naples, Gulf of Mexico, FL","Key West, FL","Fort Myers, Caloosahatchee River, FL","Virginia Key, Biscayne Bay, FL","Lake Worth Pier, Atlantic Ocean, FL","San Juan, La Puntilla, San Juan Bay, PR","Esperanza, Vieques Island, PR","Pilottown, LA","Bay Waveland Yacht Club, MS","Coast Guard Sector Mobile, AL","Galveston Bay Entrance, North Jetty, TX","Morgans Point, TX","Mckay Bay Entrance, FL","The Battery, NY")#,"Port Manatee, FL","Middle Tampa Bay, FL"))
+                      ,event=c("Irma","Irma","Irma","Irma","Irma","Irma","Irma","Irma","Irma","Maria","Maria","Nate","Nate","Nate","Harvey","Harvey","Irma","Sandy")
+                       ,stringsAsFactors = FALSE
+)
+
+stations_model <- read.csv("buoys.csv",stringsAsFactors = FALSE)
+stations_model$id <- as.character(stations_model$id)
+stations_model$event <- ifelse(stations_model$event=="",NA,stations_model$event)
+events <- data.frame(event=c("Irma","Maria","Harvey","Sandy","Nate"),date0=c("20170906","20170915","20170820","20121026","20171001"),date1=c("20170915","20170930","20170903","20121102","20171015"),stringsAsFactors=FALSE)
+
+# figure out which stations have data
+stations_w_data <- do.call(rbind,lapply(stations_model$id,function(s){
+    r1 <- getBuoyDataTrain("20170101","20170101",s,"h")
+    if (nrow(r1) == 0) {
+          r2 <- getBuoyDataTrain("20160601","20160601",s,"h")
+          if (nrow(r2) == 0) {
+            getBuoyDataTrain("20150201","20150201",s,"h")
+          } else r2
+    } else r1
+}))
+stations_w_data <- unique(stations_w_data$station_id)
+stations_model <- stations_model[which(stations_model$id %in%stations_w_data),]
+
+# build out all the dates as we can only download a year at a time
+dates <- data.frame()
+date_i <- as.POSIXct("2010-01-01")
+while(date_i < as.POSIXct("2017-12-31")){
+  dates <- rbind(dates,data.frame(d0=date_i,d1=date_i+days(365)))
+  date_i <- date_i+ days(366)
+}
+modeling_dataset <- do.call(rbind,apply(dates,1,function(d){
+  cat(paste0("Getting data for ",d[1],"->",d[2]))
+  tmp <- do.call(rbind,lapply(stations_model$id,function(s){
+      getBuoyDataTrain(format(as.POSIXct(d[1]),"%Y%m%d"),format(as.POSIXct(d[2]),"%Y%m%d"),s,"h")
+  }))
+  cat("\n")
+  tmp
+  }))
+days_in_range <- as.POSIXct(tail(modeling_dataset$Date.Time,1))-as.POSIXct(modeling_dataset[1,]$Date.Time)
+
+#modeling_dataset<- oms
+oms <- modeling_dataset
+modeling_dataset <- modeling_dataset[which(complete.cases(modeling_dataset)),]
+
+# calculate dataset completeness, we retain stations where we have at least 40% of coverage since 2010
+modeling_completeness<- modeling_dataset %>% group_by(station_id) %>% summarise(rows=n(),unique_quadrants = n_distinct(quadrant)) 
+modeling_completeness$pct <- modeling_completeness$rows /(as.numeric(days_in_range * 24))
+kable(modeling_completeness)
+
+complete_stations <- modeling_completeness[which(modeling_completeness$pct>0.3& modeling_completeness$unique_quadrants==12&modeling_completeness$station_id %in% stations_w_data),]$station_id
+
+# remove stations outside of the model
+stations_model <- stations_model[which(stations_model$id %in% complete_stations),]
+
+# add station attributes and events to the dataset, the join drops the ones for which we have no data
+modeling_dataset <- merge(
+  merge(modeling_dataset,stations_model,by.x="station_id",by.y="id")
+  ,events, by="event",all.x=TRUE)
+
+# drop observations inside of one of the events (sandy, irma, etc)
+modeling_dataset <- modeling_dataset[which(is.na(modeling_dataset$event) | (modeling_dataset$date_serial<modeling_dataset$date0|modeling_dataset$date_serial>modeling_dataset$date1)),]
+
+# remove potential outliers
+modeling_dataset <- modeling_dataset[which(abs(modeling_dataset$delta)<4 & abs(modeling_dataset$gust_delta) <100),]
+
+# add the delta percentile column
+modeling_dataset_S <- modeling_dataset %>%
+  group_by(station_id,quadrant) %>%
+    mutate(DELTA_bucket = ntile(delta, 100))
+
+#retain only the bottom and top 5 percentiles
+modeling_dataset <- as.data.frame(modeling_dataset_S[which(modeling_dataset_S$DELTA_bucket<=5 | (modeling_dataset_S$DELTA_bucket>=96)),],stringAsFactors=FALSE)
+
+
+#attach("oms-dataset.bin")
+# fit the model
+model <- lmer(delta ~1+(1 +Speed+gust_delta+I(tide_tangent^3) | quadrant:station_id), data = modeling_dataset,REML = FALSE)
+summary(model)
+
+# FIGURE OUT THE MOST VULNERABLE QUADRANTS BY STATION
+model_effects<- ranef(model)$`quadrant:station_id`
+model_effects$quadrant_station <- row.names(model_effects)
+model_effects$quadrant <- do.call(rbind,strsplit(model_effects$quadrant_station, ":", perl=TRUE))[,1]
+model_effects$station_id <- do.call(rbind,strsplit(model_effects$quadrant_station, ":", perl=TRUE))[,2]
+
+vulnerable<-data.frame(model_effects %>% group_by(station_id) %>%slice(which.max(Speed))%>%select(quadrant))
+colnames(vulnerable) <- c("station_id","vulnerable_quadrant")
+
+
+# Let's also fit a windgust model that we can use to estimate gusts given forecasted winds
+windgust_model <- lmer(gust_delta ~1+(1 +Speed | quadrant:station_id), data = modeling_dataset)
+ranef(windgust_model)
+
+#View(modeling_dataset[which(modeling_dataset$station_id=="8516945"),])
+#summary(windgust_model)
+#unique(modeling_dataset$quadrant)
+# get the data associated with the events
+events_dataset <- do.call(rbind,apply(merge(events,stations_model[which(!is.na(stations_model$event)),],by="event"),1,function (r){
+  getBuoyDataTrain(r['date0'],r['date1'],r['id'],"h",events=T)
+}))
+
+events_dataset <- events_dataset[which(complete.cases(events_dataset)),]
+
+#run predictions for the events dataset
+events_dataset$delta_pred <- predict(model,events_dataset)
+
+
+# get the lat and long of buoys
+buoy_location <- do.call(rbind,apply(stations_model,1,function (r){
+  url <- paste0("https://tidesandcurrents.noaa.gov/api/datagetter?product=water_level&application=NOS.COOPS.TAC.WL&begin_date=20170101&end_date=20170131&datum=MLLW&station=",r['id'],"&time_zone=GMT&units=english&format=json")
+#  cat(url)
+#  cat("\n")
+  j<- fromJSON(url)
+  url <- paste0("https://tidesandcurrents.noaa.gov/api/datagetter?product=water_level&application=NOS.COOPS.TAC.WL&begin_date=20160101&end_date=20160131&datum=MLLW&station=",r['id'],"&time_zone=GMT&units=english&format=json")
+  j1<- fromJSON(url)
+  f <- unique(rbind(as.data.frame( j$metadata),as.data.frame( j1$metadata)))
+  data.frame(id=as.character(f$id),name=as.character(f$name),lat=as.numeric(as.character(f$lat)),lon=as.numeric(as.character(f$lon)),stringsAsFactors = FALSE)
+}))
+
+# generate metrics
+test_dataset <- as.data.frame(modeling_dataset_S[which(modeling_dataset_S$DELTA_bucket<=10 | (modeling_dataset_S$DELTA_bucket>=90)),],stringAsFactors=FALSE)
+
+test_dataset$delta_predict <- predict(model,test_dataset)
+test_dataset$se <- (test_dataset$delta_predict - test_dataset$delta)^2
+buoy_metrics <- test_dataset %>% group_by(station_id) %>% summarise(me = sqrt(mean(se)),r2 =cor(delta,delta_predict))
+buoy_metrics <- merge(stations_model,buoy_metrics,by.x="id",by.y="station_id")
+buoy_metrics <- merge(buoy_metrics,vulnerable,by.x="id",by.y="station_id")
+View(buoy_metrics)
+
+# save all the metadata 
+save(modeling_dataset,file="modeling-dataset.bin")
+save(oms,file="oms-dataset.bin")
+save(model,windgust_model,file="model.bin")
+save(buoy_location,buoy_metrics,stations_model,events,events_dataset,stations_w_data,file="metadata.bin")
+
+# LEt's test the forecast API from openweathermap.org
+#library(plyr)
+buoy_forecast <- do.call(rbind,apply(buoy_location,1,function (r){
+  url <- paste0("http://api.openweathermap.org/data/2.5/forecast?lat=",trimws(r['lat']),"&lon=",trimws(r['lon']),"&appid=548996cea2df228663d7b75c522d578d&units=imperial")
+  j <- fromJSON(url)
+  if (nrow(j$list)>0){
+    wind <-j$list$wind
+    colnames(wind) <- c("Speed","Direction")
+#    j$list$wind$deg
+    wind$Direction <- ifelse(wind$Direction>=360,0,wind$Direction)
+    wind$quadrant <- as.character((wind$Direction %/% 30)*30)
+    wind[,'station_id'] <- r['id']
+#    browser()
+    wind$gust_delta <- predict(windgust_model,wind)
+    cbind(data.frame(id=r['id'],stringsAsFactors = F),j$list[,c("dt","dt_txt")],wind)
+  } else {
+    browser()
+    data.frame()
+  }
+}))
+```
+
+# Animation Data
+
+
+
+```{r}
+library("rgdal")
+require(XML)
+
+
+events_irma <- merge(events_dataset,event_stations,by.x="station_id",by.y="id")
+events_irma <- events_irma[which(events_irma$event =="Irma" ),c("dtm","station_id","delta","Speed","Direction","Gust","Water.Level","delta_pred","quadrant","date_serial")]
+#unique(events_irma$name.x)
+#events_wide <- reshape(events_irma, idvar = "dtm", timevar = "station_id", direction = "wide")
+events_irma <- events_irma[which(events_irma$date_serial>=20170909&events_irma$date_serial<=20170911),]
+
+#e <- merge(buoy_location,e,by.x="id",by.y="station_id")
+
+
+irma_path <-  xmlToList(xmlParse("al112017/al112017.kml"))
+irma_path <- do.call(rbind,lapply(irma_path$Document$Folder,function(e){
+    df <- data.frame(t(unlist(e)),stringsAsFactors = F)
+    if (ncol(df)>1)
+        df
+    else
+        data.frame()}))
+require(zoo)
+irma_path$atcfdtg <- as.POSIXct(irma_path$atcfdtg,tz="UTC",format="%Y%m%d%H")
+irma_path$dtm <- with_tz(irma_path$atcfdtg, "EST")
+irma_dates <- data.frame(dtm=unique(events_irma$dtm))
+irma_path <- merge(irma_dates,irma_path,all.x=T)
+#irma_path <- which
+irma_path$cat <- as.integer(gsub("#cat","",irma_path$styleUrl))
+irma_path$lat <- as.numeric(irma_path$lat)
+irma_path$lon <- as.numeric(irma_path$lon)
+irma_path$intensity <- as.numeric(irma_path$intensity)
+irma_path$lat_i <- na.spline(irma_path$lat)
+irma_path$lon_i <- na.spline(irma_path$lon)
+irma_path$intensity <- na.spline(irma_path$intensity)
+irma_path$cat <- na.spline(irma_path$cat)
+irma_path$cat <- round(ifelse(irma_path$cat<1,0,irma_path$cat))
+irma_path$cat <- round(ifelse(irma_path$cat>5,5,irma_path$cat))
+irma_path$id <- "Irma"
+irma_path$name <- "Irma"
+irma_buoys <- irma_path[,c("id","dtm","cat","lat_i","lon_i","name")]
+colnames(irma_buoys) <- c("id","dtm","cat","lat","lon","name")
+write.csv(irma_path[order(irma_path$dtm),c("dtm","lat_i","lon_i","intensity","cat")],"path-irma.csv",row.names = F)
+
+e <- events_irma#[which(events_irma$dtm=="2017-09-10 16:00:00"),]
+e <- merge(buoy_location,e,by.x="id",by.y="station_id")
+library(plyr)
+e <- rbind.fill(irma_buoys,e)
+#e <- merge(merge(buoy_location,e,by.x="id",by.y="station_id"),irma_path[order(irma_path$dtm),c("dtm","lat_i","lon_i","intensity","cat")])
+write.csv(e,"events-irma.csv",row.names = F)
+
+```

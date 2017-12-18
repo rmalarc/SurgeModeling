@@ -1,0 +1,873 @@
+---
+title: "Hurricane Irma - What if?"
+author: "Mauricio Alarcon"
+date: "9/25/2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(lubridate)
+library("ggplot2")
+library("dplyr")
+
+library("lme4")
+library("gbm")
+
+library(plotly)
+```
+
+## 
+## Data Acquisition
+
+Let's look at the last 30 days worth of data at a buoy close to Port Tampa Bay:
+
+https://tidesandcurrents.noaa.gov/api/datagetter?product=predictions&application=NOS.COOPS.TAC.WL&begin_date=20161002&end_date=20171002&datum=MLLW&station=8726667&time_zone=LST&units=english&interval=h&format=csv
+
+https://tidesandcurrents.noaa.gov/api/datagetter?product=hourly_height&application=NOS.COOPS.TAC.WL&begin_date=20161002&end_date=20171002&datum=MLLW&station=8726667&time_zone=LST&units=english&format=csv
+
+https://tidesandcurrents.noaa.gov/mdapi/latest/webapi/stations/8726667/datums.json&units=english&format=csv
+
+
+
+Given the initial exploration, let's try and get more data. 
+
+```{r}
+tideDataUrl <- function(station_id,date0,date1,product,interval="h"){
+  paste0("https://tidesandcurrents.noaa.gov/api/datagetter?product=",product,"&application=NOS.COOPS.TAC.WL&begin_date=",date0,"&end_date=",date1,"&datum=MLLW&station=",station_id,"&time_zone=LST&units=english&format=csv&interval=",interval)
+}
+metDataUrl <- function(station_id,date0,date1,product,application="NOS.COOPS.TAC.MET",interval="h"){ #
+  paste0("https://tidesandcurrents.noaa.gov/api/datagetter?product=",product,"&application=",application,"&begin_date=",date0,"&end_date=",date1,"&station=",station_id,"&time_zone=LST&units=english&format=csv&interval=",interval)
+}
+
+colnames(buoy_data)
+getBuoyData <- function(date0,date1,station_id,interval="h"){
+  cat(paste0(", ",station_id))
+
+  pred <- read.csv(url(tideDataUrl(station_id,date0,date1,"predictions",interval=interval)))
+  product <- ifelse(interval=="h","hourly_height","water_level")
+  obs <- read.csv(url(tideDataUrl(station_id,date0,date1,product,interval=interval)))
+  
+  winds <- read.csv(url(metDataUrl(station_id,date0,date1,"wind",interval=interval)))
+  air_pressure <- read.csv(url(metDataUrl(station_id,date0,date1,"air_pressure",interval=interval)))
+#  air_temperature<-read.csv(url(metDataUrl(station_id,date0,date1,"air_temperature",interval=interval)))
+  ocean_temperature<-read.csv(url(metDataUrl(station_id,date0,date1,"water_temperature","NOS.COOPS.TAC.PHYSOCEAN",interval=interval)))
+  
+  buoy_data<-merge(merge(merge(merge(pred,obs,by = c("Date.Time")),winds,by = c("Date.Time")),ocean_temperature,by = c("Date.Time")),air_pressure,by = c("Date.Time"))
+  
+  buoy_data$dtm <- as.POSIXct( buoy_data$Date.Time)
+  
+  buoy_data$hour <- hour(buoy_data$dtm)
+  
+  buoy_data$date_serial <- format(buoy_data$dtm,"%Y%m%d")
+  
+  buoy_data$delta <- buoy_data$Water.Level-buoy_data$Prediction
+  
+  buoy_data$Direction <- ifelse(buoy_data$Direction==360,0,buoy_data$Direction)
+#  buoy_data$direction_adj <- buoy_data$Direction + 33
+#  buoy_data$direction_adj <- ifelse(buoy_data$direction_adj>=365,buoy_data$direction_adj-365,buoy_data$direction_adj)
+
+  buoy_data$quadrant <- as.character((buoy_data$Direction %/% 30)*30)
+#  buoy_data$direction_relative <- buoy_data$Direction - as.integer(buoy_data$quadrant)*20
+  
+  
+  buoy_data$viscosity <- exp(-3.7188+(578.919/(-137.546+(5/9*(buoy_data$Water.Temperature-32)+273))))
+    
+  buoy_data$gust_delta <- buoy_data$Gust - buoy_data$Speed
+  if (nrow(buoy_data) ==0){
+    cat("No data here!")
+    return(data.frame())
+  }
+  buoy_data$Speed0 <- c(NA,buoy_data$Speed[-length(buoy_data$Speed)])
+
+  buoy_data$Prediction0 <- c(NA,buoy_data$Prediction[-length(buoy_data$Prediction)])
+  buoy_data$delta0 <- c(NA,buoy_data$delta[-length(buoy_data$delta)])
+  buoy_data$tide_tangent <- buoy_data$Prediction - buoy_data$Prediction0
+  buoy_data$station_id <- as.character(station_id)
+  buoy_data$Direction.1 <- as.character(buoy_data$Direction.1)
+  colnames(buoy_data) <- make.names(names=names(buoy_data), unique=TRUE, allow_ = TRUE)
+  
+  buoy_data$ft_per_knot <- buoy_data$delta/buoy_data$Speed
+
+
+  buoy_data
+}
+
+
+getBuoyDataPredict <- function(date0,date1,station_id,interval="h"){
+  cat(paste0(", ",station_id))
+
+  pred <- read.csv(url(tideDataUrl(station_id,date0,date1,"predictions",interval=interval)))
+  product <- ifelse(interval=="h","hourly_height","water_level")
+  obs <- read.csv(url(tideDataUrl(station_id,date0,date1,product,interval=interval)))
+  
+  winds <- read.csv(url(metDataUrl(station_id,date0,date1,"wind",interval)))
+#  air_pressure <- read.csv(url(metDataUrl(station_id,date0,date1,"air_pressure",interval=interval)))
+#  air_temperature<-read.csv(url(metDataUrl(station_id,date0,date1,"air_temperature",interval=interval)))
+#  ocean_temperature<-read.csv(url(metDataUrl(station_id,date0,date1,"water_temperature","NOS.COOPS.TAC.PHYSOCEAN",interval=interval)))
+  
+  buoy_data<-merge(merge(pred,obs,by = c("Date.Time")),winds,by = c("Date.Time"))
+  
+  buoy_data$dtm <- as.POSIXct( buoy_data$Date.Time)
+  
+  buoy_data$hour <- hour(buoy_data$dtm)
+  
+  buoy_data$date_serial <- format(buoy_data$dtm,"%Y%m%d")
+  
+  buoy_data$delta <- buoy_data$Water.Level-buoy_data$Prediction
+  
+  buoy_data$Direction <- ifelse(buoy_data$Direction==360,0,buoy_data$Direction)
+#  buoy_data$direction_adj <- buoy_data$Direction + 33
+#  buoy_data$direction_adj <- ifelse(buoy_data$direction_adj>=365,buoy_data$direction_adj-365,buoy_data$direction_adj)
+
+  buoy_data$quadrant <- as.character((buoy_data$Direction %/% 30)*30)
+#  buoy_data$direction_relative <- buoy_data$Direction - as.integer(buoy_data$quadrant)*20
+  
+  
+#  buoy_data$viscosity <- exp(-3.7188+(578.919/(-137.546+(5/9*(buoy_data$Water.Temperature-32)+273))))
+    
+  buoy_data$gust_delta <- buoy_data$Gust - buoy_data$Speed
+  if (nrow(buoy_data) ==0){
+    cat("No data here!")
+    return(data.frame())
+  }
+  buoy_data$Speed0 <- c(NA,buoy_data$Speed[-length(buoy_data$Speed)])
+
+  buoy_data$Prediction0 <- c(NA,buoy_data$Prediction[-length(buoy_data$Prediction)])
+#  buoy_data$delta0 <- c(NA,buoy_data$delta[-length(buoy_data$delta)])
+  buoy_data$tide_tangent <- buoy_data$Prediction - buoy_data$Prediction0
+  buoy_data$station_id <- as.character(station_id)
+  buoy_data$Direction.1 <- as.character(buoy_data$Direction.1)
+  colnames(buoy_data) <- make.names(names=names(buoy_data), unique=TRUE, allow_ = TRUE)
+  
+  buoy_data$ft_per_knot <- buoy_data$delta/buoy_data$Speed
+
+
+  buoy_data
+}
+```
+
+
+
+
+
+
+stations <- data.frame(id=c(8726607,8726520,8726667,8726724),#,8726384,8726412),
+                       name=c("Old Port Tampa, FL","St Petersburg, Tampa Bay, FL","Mckay Bay Entrance, FL","Clearwater Beach, FL"))#,"Port Manatee, FL","Middle Tampa Bay, FL")) 
+
+pred <- read.csv(url(tideDataUrl(station_id,20170113,20170212,"predictions")))
+
+obs <- read.csv(url(tideDataUrl(station_id,20170113,20170212,"hourly_height",in)))
+
+winds <- read.csv(url(metDataUrl(station_id,20170113,20170212,"wind")))
+air_pressure <- read.csv(url(metDataUrl(station_id,20170113,20170212,"air_pressure")))
+air_temperature<-read.csv(url(metDataUrl(station_id,20170113,20170212,"air_temperature")))
+ocean_temperature<-read.csv(url(metDataUrl(station_id,20170113,20170212,"water_temperature","NOS.COOPS.TAC.PHYSOCEAN")))
+
+```{r}
+#station_id <- 8726607
+buoy_data <- getBuoyData('20170813','20170912',8726607,"6")
+
+plot(Water.Level~dtm,buoy_data,typ="l",ylim=c(-10,10),col="red", main="Observed Water Levels at Old Port Tampa, FL Buoy (8726607)")
+lines(Prediction~dtm,buoy_data)
+```
+
+Lets build a preliminary model and see the correlations
+
+```{r}
+unique(buoy_data$Direction.1)
+sw_data <- buoy_data[which(buoy_data$Direction.1=="NW"),]
+m_sw <- glm(delta~Speed+Direction+gust_delta+Pressure, sw_data[which(buoy_data$date_serial <=20170908),],family = "gaussian")
+plot(m_sw)
+summary(m_sw)
+
+
+#pred$dtm <- as.POSIXct( pred$Date.Time)
+
+cor(x=sw_data$Speed,sw_data$delta)
+cor(x=sw_data$Direction,sw_data$delta)
+cor(x=sw_data$Gust,sw_data$delta)
+cor(x=sw_data$gust_delta,sw_data$delta)
+cor(x=sw_data$Pressure,sw_data$delta)
+cor(x=sw_data$Air.Temperature,sw_data$delta)
+cor(x=sw_data$viscosity,sw_data$delta)
+
+plot(delta~dtm,buoy_data,typ="l",ylim=c(-10,10),col="red")
+
+plot(delta~dtm,sw_data,ylim=c(-10,10),col="red")
+points(sw_data$dtm,predict(m_sw,sw_data))
+
+View(data.frame(observed=sw_data$delta, predicted=predict(m_sw,sw_data)))
+plot(sw_data$delta, predict(m_sw,sw_data))
+
+
+```
+
+Given the initial exploration, let's try and get more data. 
+
+```{r}
+
+
+stations <- data.frame(id=c("8726607","8726520","8726724","8723970","8725110","8724580")#,"8725520","8723214","8722670","9755371","9752695","8760721","8747437","8736897","8771341","8770613"),#,8726384,8726412)
+                       ,name=c("Old Port Tampa, FL","St Petersburg, Tampa Bay, FL","Clearwater Beach, FL","Vaca Key, Florida Bay, FL","Naples, Gulf of Mexico, FL","Key West, FL")#,"Fort Myers, Caloosahatchee River, FL","Virginia Key, Biscayne Bay, FL","Lake Worth Pier, Atlantic Ocean, FL","San Juan, La Puntilla, San Juan Bay, PR","Esperanza, Vieques Island, PR","Pilottown, LA","Bay Waveland Yacht Club, MS","Coast Guard Sector Mobile, AL","Galveston Bay Entrance, North Jetty, TX","Morgans Point, TX")#,"Port Manatee, FL","Middle Tampa Bay, FL"))
+                      ,event=c("Irma","Irma","Irma","Irma","Irma","Irma")#,"Irma","Irma","Irma","Irma","Maria","Maria","Nate","Nate","Nate","Harvey","Harvey")
+                       ,stringsAsFactors = FALSE
+)
+
+# drop bouys with missing quadrant data
+#stations <- stations[which(!(stations$id %in% c(8723214,8722670))),]
+#stations
+#events <- data.frame(event=c("Irma","Maria","Nate"),date0=c(20170901,20170915,20171001),date1=c(20170915,20170930,20171007))
+events <- data.frame(event=c("Irma","Maria","Harvey"),date0=c(20170906,20170915,20170820),date1=c(20170915,20170930,20170903))
+# build dates table as we have to download data 30 days at a time
+
+dates <- data.frame()
+date_i <- as.POSIXct("2012-01-01")
+while(date_i < as.POSIXct("2017-07-20")){
+  dates <- rbind(dates,data.frame(d0=date_i,d1=date_i+days(30)))
+  date_i <- date_i+ days(31)
+}
+dataset <- do.call(rbind,apply(dates,1,function(d){
+  cat(paste0("Getting data for ",d[1],"->",d[2]))
+  tmp <- do.call(rbind,lapply(stations[which(stations$id>8726500),]$id,function(s){
+      getBuoyData(format(as.POSIXct(d[1]),"%Y%m%d"),format(as.POSIXct(d[2]),"%Y%m%d"),s,"h")
+  }))
+  cat("\n")
+  tmp
+  }))
+
+o_ds <- dataset
+
+#d<-getBuoyData(20120907, 8726607)
+nrow(dataset)
+#View(dataset)
+dataset <- dataset[which(complete.cases(dataset)),]
+summary(dataset)
+min(unique(as.numeric(dataset$date_serial)))
+max(unique(as.numeric(dataset$date_serial)))
+days_in_range <- as.POSIXct(tail(dataset$Date.Time,1))-as.POSIXct(dataset[1,]$Date.Time)
+as.numeric(days_in_range * 24)
+
+completeness<- dataset %>% group_by(station_id) %>% summarise(rows=n()) 
+completeness$pct <- completeness$rows /(as.numeric(days_in_range * 24))
+completeness
+#dataset <- rbind(dataset[which(!(dataset$station_id %in% c("8771972","8771972","8725110"))),],dataset1)
+# o_ds$Direction <- ifelse(o_ds$Direction==360,0,o_ds$Direction)
+#  o_ds$direction_adj <- o_ds$Direction + 33
+#  o_ds$direction_adj <- ifelse(o_ds$direction_adj>=365,o_ds$direction_adj-365,o_ds$direction_adj)
+#  o_ds$quadrant <- as.character((o_ds$Direction %/% 30)*30)
+#   o_ds$Speed0 <- c(NA,o_ds$Speed[-length(o_ds$Speed)])
+# o_ds$Prediction0 <- c(NA,o_ds$Prediction[-length(o_ds$Prediction)])
+
+#  o_ds$quadrant <- as.character(o_ds$direction_adj %/% 45)
+#   o_ds$direction_relative <- o_ds$direction_adj - as.integer(o_ds$quadrant)*45
+
+#dataset <- o_ds
+
+
+cor(x=dataset$Speed,dataset$delta)
+cor(x=dataset$Direction,dataset$delta)
+cor(x=dataset$Gust,dataset$delta)
+cor(x=dataset$gust_delta,dataset$delta)
+cor(x=dataset$Pressure,dataset$delta)
+cor(x=dataset$Air.Temperature,dataset$delta)
+cor(x=dataset$viscosity,dataset$delta)
+
+
+viz <- dataset
+viz$directionq <- cut_interval(viz$Direction, 8)
+viz$speedq <- cut_number(viz$Speed, 4)
+viz$delta_q <- cut_width(viz$delta, 0.5,center=0)
+viz$month <- format(as.POSIXct(viz$Date.Time),"%m")
+viz$ft_per_knot <- viz$delta/viz$Speed
+
+boxplot(ft_per_knot~as.numeric(quadrant),viz[which(viz$Speed>10),],main="Historical Windspeed Impact on Tide Delta by Quadrant (Winds > 10Kt)",xlab="Quadrant (Degrees)",ylab="Windspeed Impact on Tide Delta (Feet per Knot)")
+
+boxplot(viz$Speed~viz$month,main="Wind Speed by Month")
+boxplot(viz$Water.Temperature~viz$month,main="Water Temperature by Month")
+boxplot(viz$delta~viz$station_id,main="Tide Delta by Buoy")
+summary(viz$delta)
+boxplot(viz$Pressure~viz$month,main="Athmospheric Pressure by Month")
+plot(viz$delta~viz$Water.Temperature,main="Delta from Prediction by Temperature")
+plot(viz$delta~viz$Speed,main="Delta from Prediction by Wind Speed")
+plot(viz$delta~viz$Pressure,main="Delta from Prediction by Athmospheric Pressure")
+plot(viz$Speed~viz$Pressure,main="Wind Speed by Athmospheric Pressure")
+plot(viz$delta~viz$Speed,main="Wind Speed by Delta",col=as.numeric(viz$quadrant))
+
+#ggplot(viz,aes(delta)) + geom_histogram()+ facet_grid(speedq~directionq)
+#ggplot(viz,aes(Direction,Speed))+geom_contour(aes(z=delta))+ facet_grid(~station_id)
+#ggplot(viz,aes(delta)) + geom_bar()+coord_polar()
+
+
+dataset_S <- dataset %>%
+  group_by(station_id,quadrant) %>%
+    mutate(DELTA_bucket = ntile(delta, 100))
+
+dataset_delta <- dataset %>%
+  mutate(delta_delta = delta - delta0) %>%
+  group_by(station_id,quadrant) %>%
+    mutate(DELTA_delta_bucket = ntile(delta_delta, 100))
+
+#dataset <- dataset[which(dataset$delta>1.3 | (dataset$delta< -0.5)),]
+
+dataset <- dataset_S[which(dataset_S$DELTA_bucket<=5 | (dataset_S$DELTA_bucket>=96)),]
+dataset_normal <- data.frame(dataset_S[which(dataset_S$DELTA_bucket%/%10==1),])
+dataset_delta <- dataset_delta[which(dataset_delta$DELTA_delta_bucket<=5| (dataset_delta$DELTA_delta_bucket>=96)),]
+#hist(dataset$delta)
+
+hist(dataset$delta)
+View(dataset %>% group_by(station_id,quadrant) %>% summarise(rows=n()))
+
+#hist(dataset[which(dataset$delta>0.5 | (dataset$delta< -0.1)),"delta"])
+#getBuoyData(sample_dates[1],8726724)
+
+```
+
+Now, let's do a stratified sample based on daily wind data in Tampa for the past 10 years:
+
+library(reshape2)
+setwd("~/Google Drive/CUNY/DATA698")
+
+wind_pie <- read.csv("1089295.csv")
+
+hist(wind_pie$AWND)
+hist(wind_pie$WDF2)
+wind_pie <- wind_pie %>%
+    mutate(AWND_bucket = ntile(AWND, 2), WDF2_bucket = ntile(WDF2, 4) )
+
+wind_pie$date_serial <- format(as.POSIXct( wind_pie$DATE),"%Y%m%d")
+wind_pie$quarter <- (as.numeric(format(as.POSIXct( wind_pie$DATE),"%m"))-1) %/% 3 +1
+
+
+library("dplyr")
+
+full_stations <- dataset[,c("date_serial","station_id")] %>% 
+  group_by(date_serial) %>% 
+  summarise(observations = n()) %>%
+  filter(observations == 24*3)
+wind_pie <- wind_pie[which(wind_pie$date_serial %in% unique(full_stations$date_serial) & wind_pie$AWND_bucket == 2),]
+detach("package:dplyr", unload=TRUE) 
+
+
+library(fifer)
+# Let's identify 10 days per wind direction, speed and quarter buckets
+sample_dates <- unique(stratified(wind_pie,group = c("AWND_bucket","WDF2_bucket","quarter"),30)[,"date_serial"])
+sample_dates <- sort(sample_dates)
+
+dataset_ss <- dataset[which(dataset$date_serial %in% sample_dates),]
+#dataset_ss$station_id <- as.character(dataset_ss$station_id)
+#dataset_ss$Date.Time <- as.character(dataset_ss$Date.Time)
+#dataset_ss$Direction.1 <- as.character(dataset_ss$Direction.1)
+#dataset_ss$speed_viscosity <- dataset_ss$Speed*dataset_ss$viscosity
+#dataset_ss$station_direction <- paste0(dataset_ss$station_id,dataset_ss$Direction.1)
+
+```{r}
+spec = c(train = .9, test = .1)
+
+g = sample(cut(
+  seq(nrow(dataset)), 
+  nrow(dataset)*cumsum(c(0,spec)),
+  labels = names(spec)
+))
+
+res = split(dataset, g)
+
+g = sample(cut(
+  seq(nrow(dataset_delta)), 
+  nrow(dataset_delta)*cumsum(c(0,spec)),
+  labels = names(spec)
+))
+
+res_delta = split(dataset_delta, g)
+
+View(res[['test']])
+#unique(paste0(dataset$station_id,dataset$quadrant))
+```
+
+# Model Building
+
+```{r}
+
+
+
+merged <- merge(stations[which(stations$id>8726500),],events[1,],by=NULL)
+predict_eval <- do.call(rbind,apply(merged,1,
+      function (r) {
+#        View(res[['train']])
+        cat(r['id'])
+        cat("\n") #& !is.null(r['id'])
+          storm <- getBuoyData(r['date0'],r['date1'],r['id'],"6")
+          if (nrow(storm) > 0 ){
+            storm[which(complete.cases(storm)),]
+          } else {
+            data.frame()
+          }
+      }))
+#install.packages("dummies")
+#library(dummies)
+#library(neuralnet)
+#train <- res[['train']]
+#unique(train$station_id)
+#train$station.8726607 <- ifelse(train$station_id==8726607,1,0)
+#train$station.8726520 <- ifelse(train$station_id==8726520,1,0)
+#train$station.8726724 <- ifelse(train$station_id==8726724,1,0)
+#nn <- neuralnet( delta ~ Speed+gust_delta+direction_relative+Direction+station.8726607+station.8726520+station.8726724,data=train,hidden=c(20,4),linear.output=T)
+
+
+# regular glm
+lmer.fit1 <- lmer(delta ~1+(1 | quadrant:station_id), data = res[['train']],REML = FALSE)
+
+lmer.fit2 <- lmer(delta ~1+(1 +Speed+gust_delta+tide_tangent| quadrant:station_id), data = res[['train']],REML = FALSE)
+
+
+lmer.fit3 <- lmer(delta ~1+(1 +Speed+gust_delta+I(tide_tangent^3) | quadrant:station_id), data = res[['train']],REML = FALSE)
+
+lmer.fit5 <- lmer(delta ~1+(I(1+tide_tangent^3)|station_id)+(0 +Speed+gust_delta | quadrant:station_id), data = res[['train']],REML = FALSE)
+
+lmer.fit4 <- lmer(delta ~1+(0 +Speed+gust_delta+I(tide_tangent^3) + viscosity| quadrant:station_id), data = res[['train']],REML = FALSE)
+
+
+#predict_ds <- NA
+#plot(lmer.fit3)
+model_metrics <- lapply(c(lmer.fit1,lmer.fit2,lmer.fit3,lmer.fit4,lmer.fit5),function (m){
+  data.frame(
+    formula=deparse(formula(m), width.cutoff=500),
+#    AIC = AIC(m),
+    mse_test = mean((res[['test']]$delta- predict(m,res[['test']]))^2), 
+    corr_test = cor(res[['test']]$delta,predict(m,res[['test']]),method="pearson"),
+    mse_normal = mean((dataset_normal$delta- predict(m,dataset_normal))^2), 
+    corr_normal = cor(dataset_normal$delta,predict(m,dataset_normal),method="pearson"),
+    mse_predict = mean((predict_eval$delta- predict(m,predict_eval))^2), 
+    corr_predict = cor(predict_eval$delta,predict(m,predict_eval),method="pearson")
+  )
+}
+)
+
+model_metrics <- do.call(rbind,model_metrics)
+
+aov <- anova(lmer.fit1,lmer.fit2,lmer.fit3,lmer.fit4,lmer.fit5)
+model_metrics <- cbind(model_metrics,aov)
+#TukeyHSD(aov)
+#plot(aov)
+#summary(aov)
+#cbind(model_metrics,aov)
+model_coef <- lapply(c(lmer.fit3),function (m){
+  s <- summary(m)
+  Vcov <- vcov(m, useScale = FALSE)
+  betas <- fixef(m)
+  betas_rand <- ranef(m)
+  betas_rand_df <- data.frame(formula=deparse(formula(m), width.cutoff=500),
+                              station_quadrant = row.names(betas_rand$`quadrant:station_id`),
+                              FixedIntercept = betas[1],
+                              betas_rand$`quadrant:station_id`)
+#  betas_rand_df$station_quadrant <- row.names(betas_rand$`quadrant:station_id`)
+#  betas_rand_df$FixedIntercept <- betas
+  betas_rand_df
+}
+)
+library("plyr")
+model_coef <- do.call(rbind.fill,model_coef)
+model_coef$station_quadrant <- as.character(model_coef$station_quadrant)
+model_coef$quadrant <- do.call(rbind,strsplit(model_coef$station_quadrant, ":", perl=TRUE))[,1]
+model_coef$quadrant <- as.integer(model_coef$quadrant)
+model_coef$station_id <- do.call(rbind,strsplit(model_coef$station_quadrant, ":", perl=TRUE))[,2]
+model_coef <- merge(model_coef,event_stations[,c("id","name.x")],by.x="station_id",by.y="id")
+
+ggplot(model_coef,aes(quadrant,Speed,label=I(round(Speed,2))))+ 
+  geom_col(aes(fill=name.x))+ 
+  theme(legend.position="bottom",axis.text.y = element_blank(),legend.title = element_blank()) +
+  xlab("Wind Direction (Degrees)")+
+  ylab("Coefficient")+
+  ggtitle("Model Coefficients by Station and Direction","Wind Speed")+
+  geom_text(size = 3, position = position_stack(vjust = 0.5))
+
+ggplot(model_coef,aes(quadrant,X.Intercept.,label=I(round(X.Intercept.,2))))+ 
+  geom_col(aes(fill=name.x))+ 
+  theme(legend.position="bottom",axis.text.y = element_blank(),legend.title = element_blank()) +
+  xlab("Wind Direction (Degrees)")+
+  ylab("Coefficient")+
+  ggtitle("Model Coefficients by Station and Direction","Intercept")+
+  geom_text(size = 3, position = position_stack(vjust = 0.5))
+
+ggplot(model_coef,aes(quadrant,I.tide_tangent.3.,label=I(round(I.tide_tangent.3.,2))))+ 
+  geom_col(aes(fill=name.x))+ 
+  theme(legend.position="bottom",axis.text.y = element_blank(),legend.title = element_blank()) +
+  xlab("Wind Direction (Degrees)")+
+  ylab("Coefficient")+
+  ggtitle("Model Coefficients by Station and Direction","Tide Tangent^3")+
+  geom_text(size = 3, position = position_stack(vjust = 0.5))
+
+ggplot(model_coef,aes(quadrant,gust_delta,label=I(round(gust_delta,2))))+ 
+  geom_col(aes(fill=name.x))+ 
+  theme(legend.position="bottom",axis.text.y = element_blank(),legend.title = element_blank()) +
+  xlab("Wind Direction (Degrees)")+
+  ylab("Coefficient")+
+  ggtitle("Model Coefficients by Station and Direction","Wind Gust Delta")+
+  geom_text(size = 3, position = position_stack(vjust = 0.5))
+
+#, position = position_nudge(x = 15)
+#Vcov <- vcov(lmer.fit, useScale = FALSE)
+#betas <- fixef(lmer.fit)
+#betas_rand <- ranef(lmer.fit)
+#sqrt(sigma(lmer.fit))
+#se <- sqrt(diag(Vcov))
+#zval <- betas / se
+#zval_rand <- betas_rand$`quadrant:station_id` / se
+#pval <- 2 * pnorm(abs(zval), lower.tail = FALSE)
+#pval_rand <- 2 * pnorm(abs(zval_rand$Speed), lower.tail = FALSE)
+###############
+#cbind(betas, se, zval, pval)
+#cbind(betas_rand, se, zval_rand, pval_rand)
+
+
+#install.packages("gbm")
+
+#gbm_m <- gbm(delta ~  Speed+gust_delta+tide_tangent + viscosity+Direction, data = res[['train']],n.trees = 200)
+#summary(gbm_m)
+
+library(h2o)
+h2o.init()
+train_h2o <- as.h2o(res[['train']][,c("Speed","delta","gust_delta","Direction","station_id","viscosity","quadrant","tide_tangent")])
+test_h2o <- as.h2o(res[['test']][,c("Speed","delta","gust_delta","Direction","station_id","viscosity","quadrant","tide_tangent")])
+irma_h2o <- as.h2o(predict_eval[,c("Speed","delta","gust_delta","Direction","station_id","viscosity","quadrant","tide_tangent")])
+normal_h2o <- as.h2o(dataset_normal[,c("Speed","delta","gust_delta","Direction","station_id","viscosity","quadrant","tide_tangent")])
+train_h2o$station_id <- as.factor(train_h2o$station_id)
+test_h2o$station_id <- as.factor(test_h2o$station_id)
+irma_h2o$station_id <- as.factor(irma_h2o$station_id)
+normal_h2o$station_id <- as.factor(normal_h2o$station_id)
+train_h2o$quadrant <- as.factor(train_h2o$quadrant)
+test_h2o$quadrant <- as.factor(test_h2o$quadrant)
+irma_h2o$quadrant <- as.factor(irma_h2o$quadrant)
+normal_h2o$quadrant <- as.factor(normal_h2o$quadrant)
+
+gbm <- h2o.gbm(x = c("Speed","gust_delta","Direction","station_id","viscosity","tide_tangent"),
+                 y = "delta",
+                 training_frame    = train_h2o,
+                 validation_frame  = test_h2o,
+                 ntrees            = 100,
+                 max_depth         = 10,
+                 learn_rate        = 0.1)
+gbm_irma <- h2o.gbm(x = c("Speed","gust_delta","Direction","station_id","viscosity","tide_tangent"),
+                 y = "delta",
+                 training_frame    = train_h2o,
+                 validation_frame  = irma_h2o,
+                 ntrees            = 100,
+                 max_depth         = 10,
+                 learn_rate        = 0.1)
+
+gbm_normal <- h2o.gbm(x = c("Speed","gust_delta","Direction","station_id","viscosity","tide_tangent"),
+                 y = "delta",
+                 training_frame    = train_h2o,
+                 validation_frame  = normal_h2o,
+                 ntrees            = 100,
+                 max_depth         = 10,
+                 learn_rate        = 0.1)
+#summary(gbm)
+h2o.mse(gbm,valid=T)
+h2o.mse(gbm_irma,valid=T)
+h2o.mse(gbm_normal,valid=T)
+h2o.r2(gbm,valid=T)
+h2o.r2(gbm_irma,valid=T)
+h2o.r2(gbm_normal,valid=T)
+
+model_metrics <- rbind.fill(model_metrics,data.frame(formula="gbm",AIC=NA,
+                               mse_test=h2o.mse(gbm,valid=T),
+                        corr_test=as.vector(cor(as.data.frame(test_h2o$delta),as.data.frame(h2o.predict(gbm,test_h2o)),method="pearson")),
+                               mse_normal=h2o.mse(gbm_normal,valid=T),
+                        corr_normal=as.vector(cor(as.data.frame(normal_h2o$delta),as.data.frame(h2o.predict(gbm_normal,normal_h2o)),method="pearson")),
+                               mse_predict=h2o.mse(gbm_irma,valid=T),
+                        corr_predict=as.vector(cor(as.data.frame(irma_h2o$delta),as.data.frame(h2o.predict(gbm_irma,irma_h2o)),method="pearson"))
+                               ))
+
+View(model_metrics)
+# predict and evaluate
+
+
+#t <-res[['test']]
+#t$predicted_lmer <- predict(lmer.fit,res[['test']])
+#t$predicted_lmer_s <- predict(lmer.fit_s,res[['test']])
+#t$predicted_tglm <- predict(tglm,res[['test']])
+#t$predicted_viglm <- predict(viglm,res[['test']])
+#t$predicted_gbm <- predict(gbm_m,res[['test']],200)
+#t$se_lmer <- (t$Water.Level-(t$Prediction+t$predicted_lmer))^2
+#t$se_lmer_s <- (t$Water.Level-(t$Prediction+t$predicted_lmer_s))^2
+#t$se_tglm <- (t$Water.Level-(t$Prediction+t$predicted_tglm))^2
+#t$se_viglm <- (t$Water.Level-(t$Prediction+t$predicted_tglm))^2
+#t$se_gbm <- (t$Water.Level-(t$Prediction+t$predicted_gbm))^2
+#hist(sqrt(t$se_lmer))
+#hist(sqrt(t$se_lmer_s))
+#hist(sqrt(t$se_tglm))
+#hist(sqrt(t$se_viglm))
+#hist(sqrt(t$se_gbm))
+#mean(sqrt(t$se_lmer))
+#mean(sqrt(t$se_lmer_s))
+#mean(sqrt(t$se_tglm))
+#mean(sqrt(t$se_viglm))
+#mean(sqrt(t$se_gbm))
+
+```
+
+
+## Let's Predict Irma
+
+```{r}
+#build the smaller model
+t <-res[['train']]
+#8726607
+sw_data <- t[which(t$quadrant==0 & t$station_id == 8726724),]
+plot(sw_data$Speed,sw_data$delta,col=sw_data$quadrant)
+plot(sw_data$Gust,sw_data$delta,col=sw_data$quadrant)
+plot(sw_data$Gust,sw_data$delta,col=sw_data$quadrant)
+m_sw <- glm(delta~0+Speed+gust_delta, sw_data[which(sw_data$date_serial <=20170908),],family = "gaussian")
+summary(m_sw)
+```
+
+```{r}
+# 8725110
+#irma_h2o <- as.h2o(irma[,c("Speed","delta","gust_delta","Direction","station_id")],destination_frame = "irma")
+#predictions <- h2o.predict(gbm,irma_h2o)
+#predictions <- as.data.frame(predictions)
+#plot(delta~dtm,irma,ylim=c(-10,10),col="red")
+#points(irma$dtm,predictions$predict)
+
+#irma$station_id <- as.character(irma$station_id)
+#irma <- irma[which(irma$Direction.1=="NW"),]
+#plot(delta~dtm,irma,ylim=c(-10,10),col="red")
+#points(irma$dtm,predict(m_sw,irma))
+
+#lmer.fit <- lmer(delta ~(0+ I(Speed^2)+Speed0 +gust_delta| quadrant:station_id), data = res[['train']])
+#lmer.fit0 <- lmer(delta ~1+(0 +Speed+gust_delta+I(tide_tangent^1/3) + viscosity| quadrant:station_id), data = res[['train']])
+#lmer.fit0 <- lmer(delta ~1+(1 +Speed+I(tide_tangent^3)+gust_delta| quadrant:station_id), data = res[['train']])
+
+#lmer.fit <- lmer(delta ~1+(0 +Speed+tide_tangent+delta0+gust_delta| quadrant:station_id), data = res_delta[['train']])
+
+#merged <- merge(stations[which(!(stations$id %in% c(8722670,8723214,8725110,8726520,8726607,8726724,8736897,8747437,8760721))),],events)
+#8723214,"8722670"
+merged <- merge(stations,events[1,],by=NULL)
+predict_ds <- data.frame()
+predict_ds <- do.call(rbind,apply(merged,1,
+      function (r) {
+#        View(res[['train']])
+        cat(r['id'])
+        cat("\n") #& !is.null(r['id'])
+#        if (r['id'] %in% t(unique(res[['train']][,"station_id"]))){
+          storm <- if (nrow(predict_ds)==0) data.frame() else predict_ds[which(predict_ds$station_id ==r['id'] & predict_ds$event == r['event.y']),]
+          storm <- if (nrow(storm)==0) getBuoyDataPredict(r['date0'],r['date1'],r['id'],"6") else storm
+          if (nrow(storm) > 0 ){
+            storm <- storm[which(complete.cases(storm)),]
+            storm$predicted <- predict(lmer.fit3,storm,allow.new.levels=T)
+#            storm$predicted0 <- predict(lmer.fit,storm,allow.new.levels=F)
+#            storm$predicted1 <- predict(gbm_m,storm,200)
+#            delta0 <- storm[1,]$delta
+#            i <- 1
+#            predicted1 <- c()
+#            delta<- c(delta0)
+##            day <- 0
+#            date <- storm[1,]$date_serial
+#            while (i <= nrow(storm)){
+#              storm_row <- storm[i,]
+#              if (storm_row$date_serial != date) {
+##                day <- day + 1
+#                delta0 <- storm[i,]$delta
+#                date <- storm_row$date_serial
+#                #browser()
+#              }
+##              browser()
+##              if (day %% 2 == 0) delta0 <- storm[i,]$delta
+#              storm_row['delta0'] <- delta0
+#              delta0 <- predict(lmer.fit,storm_row,allow.new.levels=F)
+#              predicted1 <- c(predicted1,delta0)
+#                #cat(paste(storm_row))
+#              #cat("\n")
+#              delta <- c(delta,delta0)
+#              i <- i+1
+#            }
+#            storm$predicted1 <- predicted1
+            r2 <- cor(storm$predicted,storm$delta)
+            me <- sqrt(mean((storm$predicted-storm$delta)^2))
+            cat(paste0("predicted cor: ",cor(storm$delta,storm$predicted),", me: ",sqrt(mean((storm$predicted-storm$delta)^2)),"\n"))
+#            cat(paste0("predicted0 cor: ",cor(storm$delta,storm$predicted0),", me: ",sqrt(mean((storm$predicted0-storm$delta)^2)),"\n"))
+ #           cat(paste0("predicted1 cor: ",cor(storm$delta,storm$predicted1),", me: ",sqrt(mean((storm$predicted1-storm$delta)^2)),"\n"))
+            plot(delta~dtm,storm,ylim=c(-6,4),col="black",main=paste0("Observed Vs Predicted Tide Delta\n",r['event.y']," - ",r['id'],", ",r['name']),xlab="Date",ylab="Tide Delta (Ft)")
+            storm$event <- r['event.y']
+            points(storm$dtm,storm$predicted,col="red")
+            legend("bottomleft",legend=c("Observed","Predicted"), lty=c(1,1),col=c("black","red"),   inset = c(0.1, 0.1),pch=c(1,1))
+#            points(storm$dtm,storm$predicted0,col="blue")
+#            points(storm$dtm,storm$predicted1,col="green")
+            #browser()
+            return(storm)
+          } else return(data.frame())
+#        } else return(data.frame())
+}))
+
+irma_scenario_1 <- merge(predict_ds[which(predict_ds$station_id == 8726520),c("station_id","dtm","tide_tangent","predicted","delta")],
+                         predict_ds[which(predict_ds$station_id == 8725110),c("dtm","Speed","gust_delta","quadrant")]
+                         )
+irma_scenario_1$whatif<- predict(lmer.fit3,irma_scenario_1)
+plot(delta~dtm,irma_scenario_1,ylim=c(-6,5),col="black",main="Irma What-If - Scenario 1",xlab="Date",ylab="Tide Delta (Ft)")
+            points(irma_scenario_1$dtm,irma_scenario_1$whatif,col="red")
+            legend("bottomleft",legend=c("Observed","Predicted"), lty=c(1,1),col=c("black","red"),   pch=c(1,1))
+
+irma_scenario_2 <- merge(predict_ds[which(predict_ds$station_id == 8726520),c("station_id","dtm","tide_tangent","predicted","delta")],
+                         predict_ds[which(predict_ds$station_id == 8723970),c("dtm","Speed","gust_delta","quadrant")]
+                         )
+irma_scenario_2$whatif<- predict(lmer.fit3,irma_scenario_2)
+plot(delta~dtm,irma_scenario_2,ylim=c(-6,5),col="black",main="Irma What-If - Scenario 2",xlab="Date",ylab="Tide Delta (Ft)")
+            points(irma_scenario_2$dtm,irma_scenario_2$whatif,col="red")
+            legend("bottomleft",legend=c("Observed","Predicted"), lty=c(1,1),col=c("black","red"),   pch=c(1,1))
+
+
+irma_scenario_3 <- merge(predict_ds[which(predict_ds$station_id == 8726520),c("station_id","dtm","tide_tangent","predicted","delta")],
+                         predict_ds[which(predict_ds$station_id == 8723970),c("dtm","Speed","gust_delta","quadrant","Direction")]
+                         )
+#unique(irma_scenario_3$quadrant)
+irma_scenario_3$quadrant <- as.integer(irma_scenario_3$quadrant) + 90
+#irma_scenario_3$Speed <-irma_scenario_3$Speed*2.5 
+irma_scenario_3$quadrant <- ifelse(irma_scenario_3$quadrant>=360,irma_scenario_3$quadrant-360,irma_scenario_3$quadrant)
+irma_scenario_3$quadrant <- as.character(irma_scenario_3$quadrant)
+irma_scenario_3$whatif<- predict(lmer.fit3,irma_scenario_3)
+plot(delta~dtm,irma_scenario_3,ylim=c(-6,14),col="black",main="Irma What-If - Scenario 3",xlab="Date",ylab="Tide Delta (Ft)")
+            points(irma_scenario_3$dtm,irma_scenario_3$whatif,col="red")
+            legend("bottomleft",legend=c("Observed","Predicted"), lty=c(1,1),col=c("black","red"),   pch=c(1,1))
+
+
+irma_scenario_4 <- merge(predict_ds[which(predict_ds$station_id == 8726520),c("station_id","dtm","tide_tangent","predicted","delta")],
+                         predict_ds[which(predict_ds$station_id == 8724580),c("dtm","Speed","gust_delta","quadrant")]
+                         )
+irma_scenario_4$quadrant <- as.integer(irma_scenario_4$quadrant) + 270
+irma_scenario_4$quadrant <- ifelse(irma_scenario_4$quadrant>=360,irma_scenario_4$quadrant-360,irma_scenario_4$quadrant)
+irma_scenario_4$quadrant <- as.character(irma_scenario_4$quadrant)
+irma_scenario_4$whatif<- predict(lmer.fit3,irma_scenario_4)
+plot(delta~dtm,irma_scenario_4,ylim=c(-6,10),col="black",main="Irma What-If - Scenario 4",xlab="Date",ylab="Tide Delta (Ft)")
+            points(irma_scenario_4$dtm,irma_scenario_4$whatif,col="red")
+            legend("bottomleft",legend=c("Observed","Predicted"), lty=c(1,1),col=c("black","red"),   pch=c(1,1))
+            
+            
+boxplot(predict_ds$delta~predict_ds$station_id,main="Tide Delta by Buoy during Irma")
+summary(predict_ds$delta)
+
+
+min(unique(as.numeric(predict_ds$date_serial)))
+max(unique(as.numeric(predict_ds$date_serial)))
+days_in_range <- as.POSIXct(tail(predict_ds$Date.Time,1))-as.POSIXct(predict_ds[1,]$Date.Time)
+as.numeric(days_in_range * 24)
+library("dplyr")
+completeness<- predict_ds %>% group_by(station_id) %>% summarise(rows=n()) 
+completeness$pct <- completeness$rows /(as.numeric(days_in_range * 24))
+completeness
+
+ggplot(predict_ds, aes(dtm,delta, colour = station_id) )+ 
+  geom_line(aes(y=delta)) + 
+  labs(title="Tide Delta during Hurricane Irma", y="Tide Delta (ft)", x="Date/Time")
+
+ggplot(predict_ds, aes(dtm,delta, colour = station_id) )+ 
+  facet_grid(station_id~.)+
+  geom_point() +
+  geom_spoke(aes( radius = Speed/50,angle=Direction*2*pi/360),arrow = arrow(ends = "first", length = unit(0.2, "cm")))
+
+plot_ly(predict_ds,x = ~dtm,color = ~station_id, text = ~paste0(dtm,"\nDelta: ",delta,", Speed: ",Speed,"\nDirection: ",Direction.1, "(",Direction,")")) %>%
+  add_lines(y = ~delta, name = "Tide Delta (Ft)") %>%
+  add_trace(y = ~Speed, name = "Wind Speed (Kt)", yaxis = "y2", mode = 'markers',color=~Direction.1) %>%
+  layout(
+    title = "Tide Delta and Wind Speed during Hurricane Irma", 
+    yaxis2 = list(
+        overlaying = "y",
+        side = "right",
+        title = "Wind Speed (Kt)"
+    ),
+    xaxis = list(title="Date/Time"),
+    yaxis = list(title="Tide Delta (Ft)")
+  )
+
+
+plot_ly(predict_ds,x = ~dtm,color = ~station_id, text = ~paste0(dtm,"\nDelta: ",delta,", Speed: ",Speed,"\nDirection: ",Direction.1, "(",Direction,")")) %>%
+  add_lines(y = ~delta, name = "Tide Delta (Ft)") %>%
+  add_trace(y = ~Gust, name = "Wind Gust (Kt)", yaxis = "y2", mode = 'markers',color=~Direction.1) %>%
+  layout(
+    title = "Tide Delta and Wind Speed during Hurricane Irma", 
+    yaxis2 = list(
+        overlaying = "y",
+        side = "right",
+        title = "Wind Gust (Kt)"
+    ),
+    xaxis = list(title="Date/Time"),
+    yaxis = list(title="Tide Delta (Ft)")
+  )
+
+  
+plot_ly(predict_ds,x = ~dtm,color = ~station_id, text = ~paste0(dtm,"\nDelta: ",delta,", Speed: ",Speed,"\nDirection: ",Direction.1, "(",Direction,")")) %>%
+  add_lines(y = ~delta, name = "Tide Delta (Ft)") %>%
+  add_trace(y = ~Pressure, name = "Pressure", yaxis = "y2", mode = 'markers',color=~Direction.1) %>%
+  layout(
+    title = "Tide Delta and Athmospheric Temperature during Hurricane Irma", 
+    yaxis2 = list(
+        overlaying = "y",
+        side = "right",
+        title = "Pressure"
+    ),
+    xaxis = list(title="Date/Time"),
+    yaxis = list(title="Tide Delta (Ft)")
+    )
+
+  plot_ly(predict_ds,x = ~dtm,color = ~station_id, text = ~paste0(dtm,"\nDelta: ",delta,", Speed: ",Speed,"\nDirection: ",Direction.1, "(",Direction,")")) %>%
+    add_lines(y = ~delta, name = "Tide Delta (Ft)") %>%
+    add_trace(y = ~Water.Temperature, name = "Temperature", yaxis = "y2", mode = 'markers',color=~Direction.1) %>%
+    layout(
+      title = "Tide Delta and Water Temperature during Hurricane Irma", 
+      yaxis2 = list(
+          overlaying = "y",
+          side = "right",
+          title = "Temperature (F)"
+      ),
+      xaxis = list(title="Date/Time"),
+      yaxis = list(title="Tide Delta (Ft)")
+    )
+
+
+
+
+plot_ly(predict_ds,x = ~Speed,color = ~Direction.1, text = ~paste0(dtm,"\nDelta: ",delta,", Speed: ",Speed,"\nDirection: ",Direction.1, "(",Direction,")")) %>%
+  add_markers(y = ~ft_per_knot, name = "Wind Effect on Tide (Ft per Knot)") %>%
+  layout(
+    title = "Wind Effect and Wind Speed Effects during Hurricane Irma", 
+    yaxis = list(title="Wind Effect on Tide (Ft per Knot)"),
+    xaxis = list(title="Wind Speed (Knots)")
+  )
+
+
+plot_ly(predict_ds,x = ~tide_tangent,color = ~Direction.1, text = ~paste0(dtm,"\nDelta: ",delta,", Speed: ",Speed,"\nDirection: ",Direction.1, "(",Direction,")")) %>%
+  add_markers(y = ~ft_per_knot, name = "Wind Effect on Tide (Ft per Knot)") %>%
+  layout(
+    title = "Wind Effect and Tide Direction Effects during Hurricane Irma", 
+    yaxis = list(title="Wind Effect on Tide (Ft per Knot)"),
+    xaxis = list(title="Harmonic Tide Tangent (Ft/hour)")
+  )
+
+
+plot_ly(predict_ds,x = ~viscosity,color = ~Direction.1, text = ~paste0(dtm,"\nDelta: ",delta,", Speed: ",Speed,"\nDirection: ",Direction.1, "(",Direction,")")) %>%
+  add_markers(y = ~ft_per_knot, name = "Wind Effect on Tide (Ft per Knot)") %>%
+  layout(
+    title = "Wind Effect and Water Dynamic Viscosity Effects during Hurricane Irma", 
+    yaxis = list(title="Wind Effect on Tide (Ft per Knot)"),
+    xaxis = list(title="Water Dynamic Viscosity (Voegel Equation)")
+  )
+
+plot(viscosity~Water.Temperature,predict_ds,main="Water Temperature vs Water Viscosity")
+hist(predict_ds$viscosity)
+```
+
+
+## Visualizing the Dataset
+
+
+```{r pressure, echo=FALSE}
+#library(plotly)
+#plot_ly(input_w_response, x = ~TC,y = ~value,mode = 'lines', color = ~paste0( TARGET%/% 10,"_",as.character(ID)))
+
+#,
+#        yaxis = ~paste0("y", TARGET%/% 10)) %>%
+#        add_lines() %>%
+#        subplot(nrows = 2, shareX = TRUE)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.

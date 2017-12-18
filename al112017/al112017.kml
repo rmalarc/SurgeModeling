@@ -1,0 +1,2306 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+	<kml xmlns="http://earth.google.com/kml/2.2"> 
+	<Document> 
+	<name>AL112017 Irma</name> 
+	<open>0</open> 
+	<description>
+		<![CDATA[<TABLE>
+		<TR><TD><B>Title:</B> Tropical Cyclone Best Track for AL112017</TD></TR>
+		<TR><TD><B>Description:</B> The best track is a subjectively-smoothed representation of the tropical cyclone's location and intensity at 6-h interval over its lifetime.  These best track positions and intensity (maximum 1-minute sustained surface wind speed and minimum sea-level pressure) are based on a post-storm assessment of all available data and may differ from values contained in real-time storm advisories.  In general, they will not reflect the erratic motion implied by connecting the individual center fix positions.  The best track is a living database which servers as the official U.S. National Weather Service historical record of the tropical cyclone. 
+		<TR><TD><B>Date Created:</B> 12-09-2017</TD></TR>
+		<TR><TD><B>Created:</B> National Hurricane Center </TD></TR>
+		<TR><TD><B>Disclaimer:</B> These data are intended for geographic display and analysis at the national level, and for large regional areas. No responsibilty is assumed by the National Oceanic and Atmospheric Administration or the National Hurricane Center in the use of these data.  No wawrranty, expressed or implied, is made by the National Hurricane Center regarding the utility of the data on any other system, nor shall the act of distrubtion constitute any such warranty. </TD></TR>
+		<TR><TD><B>For More Information: </B><a href="http://www.nhc.noaa.gov">http://www.nhc.noaa.gov</a></TD></TR></TABLE>]]>
+	</description>
+	<Schema parent="Placemark" name="AL112017"> 
+		<SimpleField type="wstring" name="StormName"></SimpleField> 
+		<SimpleField type="wstring" name="StormNumber"></SimpleField> 
+		<SimpleField type="wstring" name="StormType"></SimpleField> 
+		<SimpleField type="wstring" name="Basin"></SimpleField> 
+		<SimpleField type="wstring" name="lat"></SimpleField> 
+		<SimpleField type="wstring" name="lon"></SimpleField> 
+		<SimpleField type="wstring" name="Intensity"></SimpleField> 
+		<SimpleField type="wstring" name="MSLP"></SimpleField> 
+		<SimpleField type="wstring" name="DTG"></SimpleField> 
+	</Schema>
+	<Style id="pt"> 
+		<IconStyle> 
+			<scale>1.0</scale> 
+			<Icon> 
+				<href>ex_nhemi.png</href> 
+			</Icon> 
+             <hotSpot x="15" y="17" xunits="pixels" yunits="pixels"/>
+		</IconStyle> 
+		<LabelStyle> 
+			<scale>1.0</scale> 
+		</LabelStyle> 
+	</Style>
+	<Style id="cat5"> 
+		<IconStyle> 
+			<scale>1.0</scale> 
+			<Icon> 
+				<href>cat5_nhemi.png</href> 
+			</Icon> 
+             <hotSpot x="15" y="17" xunits="pixels" yunits="pixels"/>
+		</IconStyle> 
+		<LabelStyle> 
+			<scale>1.0</scale> 
+		</LabelStyle> 
+	</Style>
+	<Style id="db"> 
+		<IconStyle> 
+			<scale>1.0</scale> 
+			<Icon> 
+				<href>ex_nhemi.png</href> 
+			</Icon> 
+             <hotSpot x="15" y="17" xunits="pixels" yunits="pixels"/>
+		</IconStyle> 
+		<LabelStyle> 
+			<scale>1.0</scale> 
+		</LabelStyle> 
+	</Style>
+	<Style id="cat3"> 
+		<IconStyle> 
+			<scale>1.0</scale> 
+			<Icon> 
+				<href>cat3_nhemi.png</href> 
+			</Icon> 
+             <hotSpot x="15" y="17" xunits="pixels" yunits="pixels"/>
+		</IconStyle> 
+		<LabelStyle> 
+			<scale>1.0</scale> 
+		</LabelStyle> 
+	</Style>
+	<Style id="ss"> 
+		<IconStyle> 
+			<scale>1.0</scale> 
+			<Icon> 
+				<href>ts_nhemi.png</href> 
+			</Icon> 
+             <hotSpot x="15" y="17" xunits="pixels" yunits="pixels"/>
+		</IconStyle> 
+		<LabelStyle> 
+			<scale>1.0</scale> 
+		</LabelStyle> 
+	</Style>
+	<Style id="lo"> 
+		<IconStyle> 
+			<scale>1.0</scale> 
+			<Icon> 
+				<href>ex_nhemi.png</href> 
+			</Icon> 
+             <hotSpot x="15" y="17" xunits="pixels" yunits="pixels"/>
+		</IconStyle> 
+		<LabelStyle> 
+			<scale>1.0</scale> 
+		</LabelStyle> 
+	</Style>
+	<Style id="cat4"> 
+		<IconStyle> 
+			<scale>1.0</scale> 
+			<Icon> 
+				<href>cat4_nhemi.png</href> 
+			</Icon> 
+             <hotSpot x="15" y="17" xunits="pixels" yunits="pixels"/>
+		</IconStyle> 
+		<LabelStyle> 
+			<scale>1.0</scale> 
+		</LabelStyle> 
+	</Style>
+	<Style id="lo"> 
+		<IconStyle> 
+			<scale>1.0</scale> 
+			<Icon> 
+				<href>ex_nhemi.png</href> 
+			</Icon> 
+             <hotSpot x="15" y="17" xunits="pixels" yunits="pixels"/>
+		</IconStyle> 
+		<LabelStyle> 
+			<scale>1.0</scale> 
+		</LabelStyle> 
+	</Style>
+	<Style id="cat2"> 
+		<IconStyle> 
+			<scale>1.0</scale> 
+			<Icon> 
+				<href>cat2_nhemi.png</href> 
+			</Icon> 
+             <hotSpot x="15" y="17" xunits="pixels" yunits="pixels"/>
+		</IconStyle> 
+		<LabelStyle> 
+			<scale>1.0</scale> 
+		</LabelStyle> 
+	</Style>
+	<Style id="ts"> 
+		<IconStyle> 
+			<scale>1.0</scale> 
+			<Icon> 
+				<href>ts_nhemi.png</href> 
+			</Icon> 
+             <hotSpot x="15" y="17" xunits="pixels" yunits="pixels"/>
+		</IconStyle> 
+		<LabelStyle> 
+			<scale>1.0</scale> 
+		</LabelStyle> 
+	</Style>
+	<Style id="cat1"> 
+		<IconStyle> 
+			<scale>1.0</scale> 
+			<Icon> 
+				<href>cat1_nhemi.png</href> 
+			</Icon> 
+             <hotSpot x="15" y="17" xunits="pixels" yunits="pixels"/>
+		</IconStyle> 
+		<LabelStyle> 
+			<scale>1.0</scale> 
+		</LabelStyle> 
+	</Style>
+	<Style id="ex"> 
+		<IconStyle> 
+			<scale>1.0</scale> 
+			<Icon> 
+				<href>ex_nhemi.png</href> 
+			</Icon> 
+             <hotSpot x="15" y="17" xunits="pixels" yunits="pixels"/>
+		</IconStyle> 
+		<LabelStyle> 
+			<scale>1.0</scale> 
+		</LabelStyle> 
+	</Style>
+	<Style id="st"> 
+		<IconStyle> 
+			<scale>1.0</scale> 
+			<Icon> 
+				<href>typhoon_nhemi.png</href> 
+			</Icon> 
+             <hotSpot x="15" y="17" xunits="pixels" yunits="pixels"/>
+		</IconStyle> 
+		<LabelStyle> 
+			<scale>1.0</scale> 
+		</LabelStyle> 
+	</Style>
+	<Style id="tc"> 
+		<IconStyle> 
+			<scale>1.0</scale> 
+			<Icon> 
+				<href>ex_nhemi.png</href> 
+			</Icon> 
+             <hotSpot x="15" y="17" xunits="pixels" yunits="pixels"/>
+		</IconStyle> 
+		<LabelStyle> 
+			<scale>1.0</scale> 
+		</LabelStyle> 
+	</Style>
+	<Style id="wv"> 
+		<IconStyle> 
+			<scale>1.0</scale> 
+			<Icon> 
+				<href>ex_nhemi.png</href> 
+			</Icon> 
+             <hotSpot x="15" y="17" xunits="pixels" yunits="pixels"/>
+		</IconStyle> 
+		<LabelStyle> 
+			<scale>1.0</scale> 
+		</LabelStyle> 
+	</Style>
+	<Style id="td"> 
+		<IconStyle> 
+			<scale>1.0</scale> 
+			<Icon> 
+				<href>td_nhemi.png</href> 
+			</Icon> 
+             <hotSpot x="15" y="17" xunits="pixels" yunits="pixels"/>
+		</IconStyle> 
+		<LabelStyle> 
+			<scale>1.0</scale> 
+		</LabelStyle> 
+	</Style>
+	<Style id="sd"> 
+		<IconStyle> 
+			<scale>1.0</scale> 
+			<Icon> 
+				<href>ex_nhemi.png</href> 
+			</Icon> 
+             <hotSpot x="15" y="17" xunits="pixels" yunits="pixels"/>
+		</IconStyle> 
+		<LabelStyle> 
+			<scale>1.0</scale> 
+		</LabelStyle> 
+	</Style>
+	<Style id="ty"> 
+		<IconStyle> 
+			<scale>1.0</scale> 
+			<Icon> 
+				<href>typhoon_nhemi.png</href> 
+			</Icon> 
+             <hotSpot x="15" y="17" xunits="pixels" yunits="pixels"/>
+		</IconStyle> 
+		<LabelStyle> 
+			<scale>1.0</scale> 
+		</LabelStyle> 
+	</Style>
+	<Folder id="data"> 
+ 	    <name>Data</name> 
+
+	   <Placemark>
+	      <name>1800 UTC AUG 27</name>
+	      <Snippet maxLines="0">empty</Snippet>
+	      <description>
+	   	  <![CDATA[<table>
+	       		<tr><td>DB GENESIS023 (AL112017)</td></tr>
+	       		<tr><td><hr></td></tr>
+	       		<tr><td>1800 UTC AUG 27</td></tr>
+	       		<tr><td>Storm Location:</td></tr>
+	       		<tr><td> <B>11.5 N, -16.0 W</B> </td></tr>
+	       		<tr><td>Min Sea Level Pressure:</td></tr>
+	       		<tr><td>0 mb; 0 in Hg</td></tr>
+	       		<tr><td>Maxium Intensity:</td></tr>
+	       		<tr><td>25 knots;  29 mph;  46 kph</td></tr></table>]]>
+	       </description>
+	       <styleUrl>#ex</styleUrl>
+	       <Point>
+	   	   <coordinates>-16.0,11.5,0</coordinates>
+	       </Point>
+	       <lat>11.5</lat>
+	       <lon>-16.0</lon>
+	       <stormName>GENESIS023</stormName>
+	       <stormNum>11</stormNum>
+	       <basin>AL</basin>
+	       <stormType>DB</stormType>
+	       <intensity>25</intensity>
+	       <intensityMPH>29</intensityMPH>
+	       <intensityKPH>46</intensityKPH>
+	       <minSeaLevelPres>0</minSeaLevelPres>
+	       <atcfdtg>2017082718</atcfdtg>
+	       <dtg>1800 UTC AUG 27</dtg>
+	   </Placemark>
+
+	   <Placemark>
+	      <name>0000 UTC AUG 28</name>
+	      <Snippet maxLines="0">empty</Snippet>
+	      <description>
+	   	  <![CDATA[<table>
+	       		<tr><td>DB GENESIS023 (AL112017)</td></tr>
+	       		<tr><td><hr></td></tr>
+	       		<tr><td>0000 UTC AUG 28</td></tr>
+	       		<tr><td>Storm Location:</td></tr>
+	       		<tr><td> <B>11.5 N, -17.8 W</B> </td></tr>
+	       		<tr><td>Min Sea Level Pressure:</td></tr>
+	       		<tr><td>0 mb; 0 in Hg</td></tr>
+	       		<tr><td>Maxium Intensity:</td></tr>
+	       		<tr><td>25 knots;  29 mph;  46 kph</td></tr></table>]]>
+	       </description>
+	       <styleUrl>#ex</styleUrl>
+	       <Point>
+	   	   <coordinates>-17.8,11.5,0</coordinates>
+	       </Point>
+	       <lat>11.5</lat>
+	       <lon>-17.8</lon>
+	       <stormName>GENESIS023</stormName>
+	       <stormNum>11</stormNum>
+	       <basin>AL</basin>
+	       <stormType>DB</stormType>
+	       <intensity>25</intensity>
+	       <intensityMPH>29</intensityMPH>
+	       <intensityKPH>46</intensityKPH>
+	       <minSeaLevelPres>0</minSeaLevelPres>
+	       <atcfdtg>2017082800</atcfdtg>
+	       <dtg>0000 UTC AUG 28</dtg>
+	   </Placemark>
+
+	   <Placemark>
+	      <name>0600 UTC AUG 28</name>
+	      <Snippet maxLines="0">empty</Snippet>
+	      <description>
+	   	  <![CDATA[<table>
+	       		<tr><td>DB INVEST (AL112017)</td></tr>
+	       		<tr><td><hr></td></tr>
+	       		<tr><td>0600 UTC AUG 28</td></tr>
+	       		<tr><td>Storm Location:</td></tr>
+	       		<tr><td> <B>11.6 N, -19.3 W</B> </td></tr>
+	       		<tr><td>Min Sea Level Pressure:</td></tr>
+	       		<tr><td>1009 mb; 29.79 in Hg</td></tr>
+	       		<tr><td>Maxium Intensity:</td></tr>
+	       		<tr><td>25 knots;  29 mph;  46 kph</td></tr></table>]]>
+	       </description>
+	       <styleUrl>#ex</styleUrl>
+	       <Point>
+	   	   <coordinates>-19.3,11.6,0</coordinates>
+	       </Point>
+	       <lat>11.6</lat>
+	       <lon>-19.3</lon>
+	       <stormName>INVEST</stormName>
+	       <stormNum>11</stormNum>
+	       <basin>AL</basin>
+	       <stormType>DB</stormType>
+	       <intensity>25</intensity>
+	       <intensityMPH>29</intensityMPH>
+	       <intensityKPH>46</intensityKPH>
+	       <minSeaLevelPres>1009</minSeaLevelPres>
+	       <atcfdtg>2017082806</atcfdtg>
+	       <dtg>0600 UTC AUG 28</dtg>
+	   </Placemark>
+
+	   <Placemark>
+	      <name>1200 UTC AUG 28</name>
+	      <Snippet maxLines="0">empty</Snippet>
+	      <description>
+	   	  <![CDATA[<table>
+	       		<tr><td>LO INVEST (AL112017)</td></tr>
+	       		<tr><td><hr></td></tr>
+	       		<tr><td>1200 UTC AUG 28</td></tr>
+	       		<tr><td>Storm Location:</td></tr>
+	       		<tr><td> <B>11.9 N, -20.5 W</B> </td></tr>
+	       		<tr><td>Min Sea Level Pressure:</td></tr>
+	       		<tr><td>1009 mb; 29.79 in Hg</td></tr>
+	       		<tr><td>Maxium Intensity:</td></tr>
+	       		<tr><td>25 knots;  29 mph;  46 kph</td></tr></table>]]>
+	       </description>
+	       <styleUrl>#ex</styleUrl>
+	       <Point>
+	   	   <coordinates>-20.5,11.9,0</coordinates>
+	       </Point>
+	       <lat>11.9</lat>
+	       <lon>-20.5</lon>
+	       <stormName>INVEST</stormName>
+	       <stormNum>11</stormNum>
+	       <basin>AL</basin>
+	       <stormType>LO</stormType>
+	       <intensity>25</intensity>
+	       <intensityMPH>29</intensityMPH>
+	       <intensityKPH>46</intensityKPH>
+	       <minSeaLevelPres>1009</minSeaLevelPres>
+	       <atcfdtg>2017082812</atcfdtg>
+	       <dtg>1200 UTC AUG 28</dtg>
+	   </Placemark>
+
+	   <Placemark>
+	      <name>1800 UTC AUG 28</name>
+	      <Snippet maxLines="0">empty</Snippet>
+	      <description>
+	   	  <![CDATA[<table>
+	       		<tr><td>LO INVEST (AL112017)</td></tr>
+	       		<tr><td><hr></td></tr>
+	       		<tr><td>1800 UTC AUG 28</td></tr>
+	       		<tr><td>Storm Location:</td></tr>
+	       		<tr><td> <B>12.3 N, -21.0 W</B> </td></tr>
+	       		<tr><td>Min Sea Level Pressure:</td></tr>
+	       		<tr><td>1008 mb; 29.76 in Hg</td></tr>
+	       		<tr><td>Maxium Intensity:</td></tr>
+	       		<tr><td>25 knots;  29 mph;  46 kph</td></tr></table>]]>
+	       </description>
+	       <styleUrl>#ex</styleUrl>
+	       <Point>
+	   	   <coordinates>-21.0,12.3,0</coordinates>
+	       </Point>
+	       <lat>12.3</lat>
+	       <lon>-21.0</lon>
+	       <stormName>INVEST</stormName>
+	       <stormNum>11</stormNum>
+	       <basin>AL</basin>
+	       <stormType>LO</stormType>
+	       <intensity>25</intensity>
+	       <intensityMPH>29</intensityMPH>
+	       <intensityKPH>46</intensityKPH>
+	       <minSeaLevelPres>1008</minSeaLevelPres>
+	       <atcfdtg>2017082818</atcfdtg>
+	       <dtg>1800 UTC AUG 28</dtg>
+	   </Placemark>
+
+	   <Placemark>
+	      <name>0000 UTC AUG 29</name>
+	      <Snippet maxLines="0">empty</Snippet>
+	      <description>
+	   	  <![CDATA[<table>
+	       		<tr><td>LO INVEST (AL112017)</td></tr>
+	       		<tr><td><hr></td></tr>
+	       		<tr><td>0000 UTC AUG 29</td></tr>
+	       		<tr><td>Storm Location:</td></tr>
+	       		<tr><td> <B>13.0 N, -21.4 W</B> </td></tr>
+	       		<tr><td>Min Sea Level Pressure:</td></tr>
+	       		<tr><td>1008 mb; 29.76 in Hg</td></tr>
+	       		<tr><td>Maxium Intensity:</td></tr>
+	       		<tr><td>25 knots;  29 mph;  46 kph</td></tr></table>]]>
+	       </description>
+	       <styleUrl>#ex</styleUrl>
+	       <Point>
+	   	   <coordinates>-21.4,13.0,0</coordinates>
+	       </Point>
+	       <lat>13.0</lat>
+	       <lon>-21.4</lon>
+	       <stormName>INVEST</stormName>
+	       <stormNum>11</stormNum>
+	       <basin>AL</basin>
+	       <stormType>LO</stormType>
+	       <intensity>25</intensity>
+	       <intensityMPH>29</intensityMPH>
+	       <intensityKPH>46</intensityKPH>
+	       <minSeaLevelPres>1008</minSeaLevelPres>
+	       <atcfdtg>2017082900</atcfdtg>
+	       <dtg>0000 UTC AUG 29</dtg>
+	   </Placemark>
+
+	   <Placemark>
+	      <name>0600 UTC AUG 29</name>
+	      <Snippet maxLines="0">empty</Snippet>
+	      <description>
+	   	  <![CDATA[<table>
+	       		<tr><td>LO INVEST (AL112017)</td></tr>
+	       		<tr><td><hr></td></tr>
+	       		<tr><td>0600 UTC AUG 29</td></tr>
+	       		<tr><td>Storm Location:</td></tr>
+	       		<tr><td> <B>14.1 N, -22.4 W</B> </td></tr>
+	       		<tr><td>Min Sea Level Pressure:</td></tr>
+	       		<tr><td>1008 mb; 29.76 in Hg</td></tr>
+	       		<tr><td>Maxium Intensity:</td></tr>
+	       		<tr><td>25 knots;  29 mph;  46 kph</td></tr></table>]]>
+	       </description>
+	       <styleUrl>#ex</styleUrl>
+	       <Point>
+	   	   <coordinates>-22.4,14.1,0</coordinates>
+	       </Point>
+	       <lat>14.1</lat>
+	       <lon>-22.4</lon>
+	       <stormName>INVEST</stormName>
+	       <stormNum>11</stormNum>
+	       <basin>AL</basin>
+	       <stormType>LO</stormType>
+	       <intensity>25</intensity>
+	       <intensityMPH>29</intensityMPH>
+	       <intensityKPH>46</intensityKPH>
+	       <minSeaLevelPres>1008</minSeaLevelPres>
+	       <atcfdtg>2017082906</atcfdtg>
+	       <dtg>0600 UTC AUG 29</dtg>
+	   </Placemark>
+
+	   <Placemark>
+	      <name>1200 UTC AUG 29</name>
+	      <Snippet maxLines="0">empty</Snippet>
+	      <description>
+	   	  <![CDATA[<table>
+	       		<tr><td>LO INVEST (AL112017)</td></tr>
+	       		<tr><td><hr></td></tr>
+	       		<tr><td>1200 UTC AUG 29</td></tr>
+	       		<tr><td>Storm Location:</td></tr>
+	       		<tr><td> <B>15.2 N, -23.7 W</B> </td></tr>
+	       		<tr><td>Min Sea Level Pressure:</td></tr>
+	       		<tr><td>1008 mb; 29.76 in Hg</td></tr>
+	       		<tr><td>Maxium Intensity:</td></tr>
+	       		<tr><td>25 knots;  29 mph;  46 kph</td></tr></table>]]>
+	       </description>
+	       <styleUrl>#ex</styleUrl>
+	       <Point>
+	   	   <coordinates>-23.7,15.2,0</coordinates>
+	       </Point>
+	       <lat>15.2</lat>
+	       <lon>-23.7</lon>
+	       <stormName>INVEST</stormName>
+	       <stormNum>11</stormNum>
+	       <basin>AL</basin>
+	       <stormType>LO</stormType>
+	       <intensity>25</intensity>
+	       <intensityMPH>29</intensityMPH>
+	       <intensityKPH>46</intensityKPH>
+	       <minSeaLevelPres>1008</minSeaLevelPres>
+	       <atcfdtg>2017082912</atcfdtg>
+	       <dtg>1200 UTC AUG 29</dtg>
+	   </Placemark>
+
+	   <Placemark>
+	      <name>1800 UTC AUG 29</name>
+	      <Snippet maxLines="0">empty</Snippet>
+	      <description>
+	   	  <![CDATA[<table>
+	       		<tr><td>LO INVEST (AL112017)</td></tr>
+	       		<tr><td><hr></td></tr>
+	       		<tr><td>1800 UTC AUG 29</td></tr>
+	       		<tr><td>Storm Location:</td></tr>
+	       		<tr><td> <B>15.5 N, -25.3 W</B> </td></tr>
+	       		<tr><td>Min Sea Level Pressure:</td></tr>
+	       		<tr><td>1008 mb; 29.76 in Hg</td></tr>
+	       		<tr><td>Maxium Intensity:</td></tr>
+	       		<tr><td>25 knots;  29 mph;  46 kph</td></tr></table>]]>
+	       </description>
+	       <styleUrl>#ex</styleUrl>
+	       <Point>
+	   	   <coordinates>-25.3,15.5,0</coordinates>
+	       </Point>
+	       <lat>15.5</lat>
+	       <lon>-25.3</lon>
+	       <stormName>INVEST</stormName>
+	       <stormNum>11</stormNum>
+	       <basin>AL</basin>
+	       <stormType>LO</stormType>
+	       <intensity>25</intensity>
+	       <intensityMPH>29</intensityMPH>
+	       <intensityKPH>46</intensityKPH>
+	       <minSeaLevelPres>1008</minSeaLevelPres>
+	       <atcfdtg>2017082918</atcfdtg>
+	       <dtg>1800 UTC AUG 29</dtg>
+	   </Placemark>
+
+	   <Placemark>
+	      <name>0000 UTC AUG 30</name>
+	      <Snippet maxLines="0">empty</Snippet>
+	      <description>
+	   	  <![CDATA[<table>
+	       		<tr><td>LO INVEST (AL112017)</td></tr>
+	       		<tr><td><hr></td></tr>
+	       		<tr><td>0000 UTC AUG 30</td></tr>
+	       		<tr><td>Storm Location:</td></tr>
+	       		<tr><td> <B>15.9 N, -26.6 W</B> </td></tr>
+	       		<tr><td>Min Sea Level Pressure:</td></tr>
+	       		<tr><td>1008 mb; 29.76 in Hg</td></tr>
+	       		<tr><td>Maxium Intensity:</td></tr>
+	       		<tr><td>25 knots;  29 mph;  46 kph</td></tr></table>]]>
+	       </description>
+	       <styleUrl>#ex</styleUrl>
+	       <Point>
+	   	   <coordinates>-26.6,15.9,0</coordinates>
+	       </Point>
+	       <lat>15.9</lat>
+	       <lon>-26.6</lon>
+	       <stormName>INVEST</stormName>
+	       <stormNum>11</stormNum>
+	       <basin>AL</basin>
+	       <stormType>LO</stormType>
+	       <intensity>25</intensity>
+	       <intensityMPH>29</intensityMPH>
+	       <intensityKPH>46</intensityKPH>
+	       <minSeaLevelPres>1008</minSeaLevelPres>
+	       <atcfdtg>2017083000</atcfdtg>
+	       <dtg>0000 UTC AUG 30</dtg>
+	   </Placemark>
+
+	   <Placemark>
+	      <name>0600 UTC AUG 30</name>
+	      <Snippet maxLines="0">empty</Snippet>
+	      <description>
+	   	  <![CDATA[<table>
+	       		<tr><td>LO INVEST (AL112017)</td></tr>
+	       		<tr><td><hr></td></tr>
+	       		<tr><td>0600 UTC AUG 30</td></tr>
+	       		<tr><td>Storm Location:</td></tr>
+	       		<tr><td> <B>16.2 N, -28.0 W</B> </td></tr>
+	       		<tr><td>Min Sea Level Pressure:</td></tr>
+	       		<tr><td>1007 mb; 29.73 in Hg</td></tr>
+	       		<tr><td>Maxium Intensity:</td></tr>
+	       		<tr><td>35 knots;  40 mph;  65 kph</td></tr></table>]]>
+	       </description>
+	       <styleUrl>#ex</styleUrl>
+	       <Point>
+	   	   <coordinates>-28.0,16.2,0</coordinates>
+	       </Point>
+	       <lat>16.2</lat>
+	       <lon>-28.0</lon>
+	       <stormName>INVEST</stormName>
+	       <stormNum>11</stormNum>
+	       <basin>AL</basin>
+	       <stormType>LO</stormType>
+	       <intensity>35</intensity>
+	       <intensityMPH>40</intensityMPH>
+	       <intensityKPH>65</intensityKPH>
+	       <minSeaLevelPres>1007</minSeaLevelPres>
+	       <atcfdtg>2017083006</atcfdtg>
+	       <dtg>0600 UTC AUG 30</dtg>
+	   </Placemark>
+
+	   <Placemark>
+	      <name>1200 UTC AUG 30</name>
+	      <Snippet maxLines="0">empty</Snippet>
+	      <description>
+	   	  <![CDATA[<table>
+	       		<tr><td>TS IRMA (AL112017)</td></tr>
+	       		<tr><td><hr></td></tr>
+	       		<tr><td>1200 UTC AUG 30</td></tr>
+	       		<tr><td>Storm Location:</td></tr>
+	       		<tr><td> <B>16.3 N, -29.8 W</B> </td></tr>
+	       		<tr><td>Min Sea Level Pressure:</td></tr>
+	       		<tr><td>1006 mb; 29.70 in Hg</td></tr>
+	       		<tr><td>Maxium Intensity:</td></tr>
+	       		<tr><td>45 knots;  52 mph;  83 kph</td></tr></table>]]>
+	       </description>
+	       <styleUrl>#ts</styleUrl>
+	       <Point>
+	   	   <coordinates>-29.8,16.3,0</coordinates>
+	       </Point>
+	       <lat>16.3</lat>
+	       <lon>-29.8</lon>
+	       <stormName>IRMA</stormName>
+	       <stormNum>11</stormNum>
+	       <basin>AL</basin>
+	       <stormType>TS</stormType>
+	       <intensity>45</intensity>
+	       <intensityMPH>52</intensityMPH>
+	       <intensityKPH>83</intensityKPH>
+	       <minSeaLevelPres>1006</minSeaLevelPres>
+	       <atcfdtg>2017083012</atcfdtg>
+	       <dtg>1200 UTC AUG 30</dtg>
+	   </Placemark>
+
+	   <Placemark>
+	      <name>1800 UTC AUG 30</name>
+	      <Snippet maxLines="0">empty</Snippet>
+	      <description>
+	   	  <![CDATA[<table>
+	       		<tr><td>TS IRMA (AL112017)</td></tr>
+	       		<tr><td><hr></td></tr>
+	       		<tr><td>1800 UTC AUG 30</td></tr>
+	       		<tr><td>Storm Location:</td></tr>
+	       		<tr><td> <B>16.3 N, -30.8 W</B> </td></tr>
+	       		<tr><td>Min Sea Level Pressure:</td></tr>
+	       		<tr><td>1004 mb; 29.64 in Hg</td></tr>
+	       		<tr><td>Maxium Intensity:</td></tr>
+	       		<tr><td>50 knots;  58 mph;  93 kph</td></tr></table>]]>
+	       </description>
+	       <styleUrl>#ts</styleUrl>
+	       <Point>
+	   	   <coordinates>-30.8,16.3,0</coordinates>
+	       </Point>
+	       <lat>16.3</lat>
+	       <lon>-30.8</lon>
+	       <stormName>IRMA</stormName>
+	       <stormNum>11</stormNum>
+	       <basin>AL</basin>
+	       <stormType>TS</stormType>
+	       <intensity>50</intensity>
+	       <intensityMPH>58</intensityMPH>
+	       <intensityKPH>93</intensityKPH>
+	       <minSeaLevelPres>1004</minSeaLevelPres>
+	       <atcfdtg>2017083018</atcfdtg>
+	       <dtg>1800 UTC AUG 30</dtg>
+	   </Placemark>
+
+	   <Placemark>
+	      <name>0000 UTC AUG 31</name>
+	      <Snippet maxLines="0">empty</Snippet>
+	      <description>
+	   	  <![CDATA[<table>
+	       		<tr><td>TS IRMA (AL112017)</td></tr>
+	       		<tr><td><hr></td></tr>
+	       		<tr><td>0000 UTC AUG 31</td></tr>
+	       		<tr><td>Storm Location:</td></tr>
+	       		<tr><td> <B>16.3 N, -31.6 W</B> </td></tr>
+	       		<tr><td>Min Sea Level Pressure:</td></tr>
+	       		<tr><td>999 mb; 29.50 in Hg</td></tr>
+	       		<tr><td>Maxium Intensity:</td></tr>
+	       		<tr><td>55 knots;  63 mph;  102 kph</td></tr></table>]]>
+	       </description>
+	       <styleUrl>#ts</styleUrl>
+	       <Point>
+	   	   <coordinates>-31.6,16.3,0</coordinates>
+	       </Point>
+	       <lat>16.3</lat>
+	       <lon>-31.6</lon>
+	       <stormName>IRMA</stormName>
+	       <stormNum>11</stormNum>
+	       <basin>AL</basin>
+	       <stormType>TS</stormType>
+	       <intensity>55</intensity>
+	       <intensityMPH>63</intensityMPH>
+	       <intensityKPH>102</intensityKPH>
+	       <minSeaLevelPres>999</minSeaLevelPres>
+	       <atcfdtg>2017083100</atcfdtg>
+	       <dtg>0000 UTC AUG 31</dtg>
+	   </Placemark>
+
+	   <Placemark>
+	      <name>0600 UTC AUG 31</name>
+	      <Snippet maxLines="0">empty</Snippet>
+	      <description>
+	   	  <![CDATA[<table>
+	       		<tr><td>HU IRMA (AL112017)</td></tr>
+	       		<tr><td><hr></td></tr>
+	       		<tr><td>0600 UTC AUG 31</td></tr>
+	       		<tr><td>Storm Location:</td></tr>
+	       		<tr><td> <B>16.4 N, -32.5 W</B> </td></tr>
+	       		<tr><td>Min Sea Level Pressure:</td></tr>
+	       		<tr><td>994 mb; 29.35 in Hg</td></tr>
+	       		<tr><td>Maxium Intensity:</td></tr>
+	       		<tr><td>65 knots;  75 mph;  120 kph</td></tr></table>]]>
+	       </description>
+	       <styleUrl>#cat1</styleUrl>
+	       <Point>
+	   	   <coordinates>-32.5,16.4,0</coordinates>
+	       </Point>
+	       <lat>16.4</lat>
+	       <lon>-32.5</lon>
+	       <stormName>IRMA</stormName>
+	       <stormNum>11</stormNum>
+	       <basin>AL</basin>
+	       <stormType>HU</stormType>
+	       <intensity>65</intensity>
+	       <intensityMPH>75</intensityMPH>
+	       <intensityKPH>120</intensityKPH>
+	       <minSeaLevelPres>994</minSeaLevelPres>
+	       <atcfdtg>2017083106</atcfdtg>
+	       <dtg>0600 UTC AUG 31</dtg>
+	   </Placemark>
+
+	   <Placemark>
+	      <name>1200 UTC AUG 31</name>
+	      <Snippet maxLines="0">empty</Snippet>
+	      <description>
+	   	  <![CDATA[<table>
+	       		<tr><td>HU IRMA (AL112017)</td></tr>
+	       		<tr><td><hr></td></tr>
+	       		<tr><td>1200 UTC AUG 31</td></tr>
+	       		<tr><td>Storm Location:</td></tr>
+	       		<tr><td> <B>16.7 N, -33.4 W</B> </td></tr>
+	       		<tr><td>Min Sea Level Pressure:</td></tr>
+	       		<tr><td>983 mb; 29.02 in Hg</td></tr>
+	       		<tr><td>Maxium Intensity:</td></tr>
+	       		<tr><td>80 knots;  92 mph;  148 kph</td></tr></table>]]>
+	       </description>
+	       <styleUrl>#cat1</styleUrl>
+	       <Point>
+	   	   <coordinates>-33.4,16.7,0</coordinates>
+	       </Point>
+	       <lat>16.7</lat>
+	       <lon>-33.4</lon>
+	       <stormName>IRMA</stormName>
+	       <stormNum>11</stormNum>
+	       <basin>AL</basin>
+	       <stormType>HU</stormType>
+	       <intensity>80</intensity>
+	       <intensityMPH>92</intensityMPH>
+	       <intensityKPH>148</intensityKPH>
+	       <minSeaLevelPres>983</minSeaLevelPres>
+	       <atcfdtg>2017083112</atcfdtg>
+	       <dtg>1200 UTC AUG 31</dtg>
+	   </Placemark>
+
+	   <Placemark>
+	      <name>1800 UTC AUG 31</name>
+	      <Snippet maxLines="0">empty</Snippet>
+	      <description>
+	   	  <![CDATA[<table>
+	       		<tr><td>HU IRMA (AL112017)</td></tr>
+	       		<tr><td><hr></td></tr>
+	       		<tr><td>1800 UTC AUG 31</td></tr>
+	       		<tr><td>Storm Location:</td></tr>
+	       		<tr><td> <B>17.1 N, -34.3 W</B> </td></tr>
+	       		<tr><td>Min Sea Level Pressure:</td></tr>
+	       		<tr><td>970 mb; 28.64 in Hg</td></tr>
+	       		<tr><td>Maxium Intensity:</td></tr>
+	       		<tr><td>95 knots;  109 mph;  176 kph</td></tr></table>]]>
+	       </description>
+	       <styleUrl>#cat2</styleUrl>
+	       <Point>
+	   	   <coordinates>-34.3,17.1,0</coordinates>
+	       </Point>
+	       <lat>17.1</lat>
+	       <lon>-34.3</lon>
+	       <stormName>IRMA</stormName>
+	       <stormNum>11</stormNum>
+	       <basin>AL</basin>
+	       <stormType>HU</stormType>
+	       <intensity>95</intensity>
+	       <intensityMPH>109</intensityMPH>
+	       <intensityKPH>176</intensityKPH>
+	       <minSeaLevelPres>970</minSeaLevelPres>
+	       <atcfdtg>2017083118</atcfdtg>
+	       <dtg>1800 UTC AUG 31</dtg>
+	   </Placemark>
+
+	   <Placemark>
+	      <name>0000 UTC SEP 01</name>
+	      <Snippet maxLines="0">empty</Snippet>
+	      <description>
+	   	  <![CDATA[<table>
+	       		<tr><td>HU IRMA (AL112017)</td></tr>
+	       		<tr><td><hr></td></tr>
+	       		<tr><td>0000 UTC SEP 01</td></tr>
+	       		<tr><td>Storm Location:</td></tr>
+	       		<tr><td> <B>17.5 N, -35.1 W</B> </td></tr>
+	       		<tr><td>Min Sea Level Pressure:</td></tr>
+	       		<tr><td>967 mb; 28.55 in Hg</td></tr>
+	       		<tr><td>Maxium Intensity:</td></tr>
+	       		<tr><td>100 knots;  115 mph;  185 kph</td></tr></table>]]>
+	       </description>
+	       <styleUrl>#cat3</styleUrl>
+	       <Point>
+	   	   <coordinates>-35.1,17.5,0</coordinates>
+	       </Point>
+	       <lat>17.5</lat>
+	       <lon>-35.1</lon>
+	       <stormName>IRMA</stormName>
+	       <stormNum>11</stormNum>
+	       <basin>AL</basin>
+	       <stormType>HU</stormType>
+	       <intensity>100</intensity>
+	       <intensityMPH>115</intensityMPH>
+	       <intensityKPH>185</intensityKPH>
+	       <minSeaLevelPres>967</minSeaLevelPres>
+	       <atcfdtg>2017090100</atcfdtg>
+	       <dtg>0000 UTC SEP 01</dtg>
+	   </Placemark>
+
+	   <Placemark>
+	      <name>0600 UTC SEP 01</name>
+	      <Snippet maxLines="0">empty</Snippet>
+	      <description>
+	   	  <![CDATA[<table>
+	       		<tr><td>HU IRMA (AL112017)</td></tr>
+	       		<tr><td><hr></td></tr>
+	       		<tr><td>0600 UTC SEP 01</td></tr>
+	       		<tr><td>Storm Location:</td></tr>
+	       		<tr><td> <B>17.9 N, -36.1 W</B> </td></tr>
+	       		<tr><td>Min Sea Level Pressure:</td></tr>
+	       		<tr><td>972 mb; 28.70 in Hg</td></tr>
+	       		<tr><td>Maxium Intensity:</td></tr>
+	       		<tr><td>95 knots;  109 mph;  176 kph</td></tr></table>]]>
+	       </description>
+	       <styleUrl>#cat2</styleUrl>
+	       <Point>
+	   	   <coordinates>-36.1,17.9,0</coordinates>
+	       </Point>
+	       <lat>17.9</lat>
+	       <lon>-36.1</lon>
+	       <stormName>IRMA</stormName>
+	       <stormNum>11</stormNum>
+	       <basin>AL</basin>
+	       <stormType>HU</stormType>
+	       <intensity>95</intensity>
+	       <intensityMPH>109</intensityMPH>
+	       <intensityKPH>176</intensityKPH>
+	       <minSeaLevelPres>972</minSeaLevelPres>
+	       <atcfdtg>2017090106</atcfdtg>
+	       <dtg>0600 UTC SEP 01</dtg>
+	   </Placemark>
+
+	   <Placemark>
+	      <name>1200 UTC SEP 01</name>
+	      <Snippet maxLines="0">empty</Snippet>
+	      <description>
+	   	  <![CDATA[<table>
+	       		<tr><td>HU IRMA (AL112017)</td></tr>
+	       		<tr><td><hr></td></tr>
+	       		<tr><td>1200 UTC SEP 01</td></tr>
+	       		<tr><td>Storm Location:</td></tr>
+	       		<tr><td> <B>18.4 N, -37.3 W</B> </td></tr>
+	       		<tr><td>Min Sea Level Pressure:</td></tr>
+	       		<tr><td>972 mb; 28.70 in Hg</td></tr>
+	       		<tr><td>Maxium Intensity:</td></tr>
+	       		<tr><td>95 knots;  109 mph;  176 kph</td></tr></table>]]>
+	       </description>
+	       <styleUrl>#cat2</styleUrl>
+	       <Point>
+	   	   <coordinates>-37.3,18.4,0</coordinates>
+	       </Point>
+	       <lat>18.4</lat>
+	       <lon>-37.3</lon>
+	       <stormName>IRMA</stormName>
+	       <stormNum>11</stormNum>
+	       <basin>AL</basin>
+	       <stormType>HU</stormType>
+	       <intensity>95</intensity>
+	       <intensityMPH>109</intensityMPH>
+	       <intensityKPH>176</intensityKPH>
+	       <minSeaLevelPres>972</minSeaLevelPres>
+	       <atcfdtg>2017090112</atcfdtg>
+	       <dtg>1200 UTC SEP 01</dtg>
+	   </Placemark>
+
+	   <Placemark>
+	      <name>1800 UTC SEP 01</name>
+	      <Snippet maxLines="0">empty</Snippet>
+	      <description>
+	   	  <![CDATA[<table>
+	       		<tr><td>HU IRMA (AL112017)</td></tr>
+	       		<tr><td><hr></td></tr>
+	       		<tr><td>1800 UTC SEP 01</td></tr>
+	       		<tr><td>Storm Location:</td></tr>
+	       		<tr><td> <B>18.8 N, -38.5 W</B> </td></tr>
+	       		<tr><td>Min Sea Level Pressure:</td></tr>
+	       		<tr><td>967 mb; 28.55 in Hg</td></tr>
+	       		<tr><td>Maxium Intensity:</td></tr>
+	       		<tr><td>100 knots;  115 mph;  185 kph</td></tr></table>]]>
+	       </description>
+	       <styleUrl>#cat3</styleUrl>
+	       <Point>
+	   	   <coordinates>-38.5,18.8,0</coordinates>
+	       </Point>
+	       <lat>18.8</lat>
+	       <lon>-38.5</lon>
+	       <stormName>IRMA</stormName>
+	       <stormNum>11</stormNum>
+	       <basin>AL</basin>
+	       <stormType>HU</stormType>
+	       <intensity>100</intensity>
+	       <intensityMPH>115</intensityMPH>
+	       <intensityKPH>185</intensityKPH>
+	       <minSeaLevelPres>967</minSeaLevelPres>
+	       <atcfdtg>2017090118</atcfdtg>
+	       <dtg>1800 UTC SEP 01</dtg>
+	   </Placemark>
+
+	   <Placemark>
+	      <name>0000 UTC SEP 02</name>
+	      <Snippet maxLines="0">empty</Snippet>
+	      <description>
+	   	  <![CDATA[<table>
+	       		<tr><td>HU IRMA (AL112017)</td></tr>
+	       		<tr><td><hr></td></tr>
+	       		<tr><td>0000 UTC SEP 02</td></tr>
+	       		<tr><td>Storm Location:</td></tr>
+	       		<tr><td> <B>19.1 N, -39.7 W</B> </td></tr>
+	       		<tr><td>Min Sea Level Pressure:</td></tr>
+	       		<tr><td>964 mb; 28.46 in Hg</td></tr>
+	       		<tr><td>Maxium Intensity:</td></tr>
+	       		<tr><td>100 knots;  115 mph;  185 kph</td></tr></table>]]>
+	       </description>
+	       <styleUrl>#cat3</styleUrl>
+	       <Point>
+	   	   <coordinates>-39.7,19.1,0</coordinates>
+	       </Point>
+	       <lat>19.1</lat>
+	       <lon>-39.7</lon>
+	       <stormName>IRMA</stormName>
+	       <stormNum>11</stormNum>
+	       <basin>AL</basin>
+	       <stormType>HU</stormType>
+	       <intensity>100</intensity>
+	       <intensityMPH>115</intensityMPH>
+	       <intensityKPH>185</intensityKPH>
+	       <minSeaLevelPres>964</minSeaLevelPres>
+	       <atcfdtg>2017090200</atcfdtg>
+	       <dtg>0000 UTC SEP 02</dtg>
+	   </Placemark>
+
+	   <Placemark>
+	      <name>0600 UTC SEP 02</name>
+	      <Snippet maxLines="0">empty</Snippet>
+	      <description>
+	   	  <![CDATA[<table>
+	       		<tr><td>HU IRMA (AL112017)</td></tr>
+	       		<tr><td><hr></td></tr>
+	       		<tr><td>0600 UTC SEP 02</td></tr>
+	       		<tr><td>Storm Location:</td></tr>
+	       		<tr><td> <B>19.1 N, -41.1 W</B> </td></tr>
+	       		<tr><td>Min Sea Level Pressure:</td></tr>
+	       		<tr><td>967 mb; 28.55 in Hg</td></tr>
+	       		<tr><td>Maxium Intensity:</td></tr>
+	       		<tr><td>100 knots;  115 mph;  185 kph</td></tr></table>]]>
+	       </description>
+	       <styleUrl>#cat3</styleUrl>
+	       <Point>
+	   	   <coordinates>-41.1,19.1,0</coordinates>
+	       </Point>
+	       <lat>19.1</lat>
+	       <lon>-41.1</lon>
+	       <stormName>IRMA</stormName>
+	       <stormNum>11</stormNum>
+	       <basin>AL</basin>
+	       <stormType>HU</stormType>
+	       <intensity>100</intensity>
+	       <intensityMPH>115</intensityMPH>
+	       <intensityKPH>185</intensityKPH>
+	       <minSeaLevelPres>967</minSeaLevelPres>
+	       <atcfdtg>2017090206</atcfdtg>
+	       <dtg>0600 UTC SEP 02</dtg>
+	   </Placemark>
+
+	   <Placemark>
+	      <name>1200 UTC SEP 02</name>
+	      <Snippet maxLines="0">empty</Snippet>
+	      <description>
+	   	  <![CDATA[<table>
+	       		<tr><td>HU IRMA (AL112017)</td></tr>
+	       		<tr><td><hr></td></tr>
+	       		<tr><td>1200 UTC SEP 02</td></tr>
+	       		<tr><td>Storm Location:</td></tr>
+	       		<tr><td> <B>18.9 N, -42.6 W</B> </td></tr>
+	       		<tr><td>Min Sea Level Pressure:</td></tr>
+	       		<tr><td>973 mb; 28.73 in Hg</td></tr>
+	       		<tr><td>Maxium Intensity:</td></tr>
+	       		<tr><td>95 knots;  109 mph;  176 kph</td></tr></table>]]>
+	       </description>
+	       <styleUrl>#cat2</styleUrl>
+	       <Point>
+	   	   <coordinates>-42.6,18.9,0</coordinates>
+	       </Point>
+	       <lat>18.9</lat>
+	       <lon>-42.6</lon>
+	       <stormName>IRMA</stormName>
+	       <stormNum>11</stormNum>
+	       <basin>AL</basin>
+	       <stormType>HU</stormType>
+	       <intensity>95</intensity>
+	       <intensityMPH>109</intensityMPH>
+	       <intensityKPH>176</intensityKPH>
+	       <minSeaLevelPres>973</minSeaLevelPres>
+	       <atcfdtg>2017090212</atcfdtg>
+	       <dtg>1200 UTC SEP 02</dtg>
+	   </Placemark>
+
+	   <Placemark>
+	      <name>1800 UTC SEP 02</name>
+	      <Snippet maxLines="0">empty</Snippet>
+	      <description>
+	   	  <![CDATA[<table>
+	       		<tr><td>HU IRMA (AL112017)</td></tr>
+	       		<tr><td><hr></td></tr>
+	       		<tr><td>1800 UTC SEP 02</td></tr>
+	       		<tr><td>Storm Location:</td></tr>
+	       		<tr><td> <B>18.7 N, -44.1 W</B> </td></tr>
+	       		<tr><td>Min Sea Level Pressure:</td></tr>
+	       		<tr><td>973 mb; 28.73 in Hg</td></tr>
+	       		<tr><td>Maxium Intensity:</td></tr>
+	       		<tr><td>95 knots;  109 mph;  176 kph</td></tr></table>]]>
+	       </description>
+	       <styleUrl>#cat2</styleUrl>
+	       <Point>
+	   	   <coordinates>-44.1,18.7,0</coordinates>
+	       </Point>
+	       <lat>18.7</lat>
+	       <lon>-44.1</lon>
+	       <stormName>IRMA</stormName>
+	       <stormNum>11</stormNum>
+	       <basin>AL</basin>
+	       <stormType>HU</stormType>
+	       <intensity>95</intensity>
+	       <intensityMPH>109</intensityMPH>
+	       <intensityKPH>176</intensityKPH>
+	       <minSeaLevelPres>973</minSeaLevelPres>
+	       <atcfdtg>2017090218</atcfdtg>
+	       <dtg>1800 UTC SEP 02</dtg>
+	   </Placemark>
+
+	   <Placemark>
+	      <name>0000 UTC SEP 03</name>
+	      <Snippet maxLines="0">empty</Snippet>
+	      <description>
+	   	  <![CDATA[<table>
+	       		<tr><td>HU IRMA (AL112017)</td></tr>
+	       		<tr><td><hr></td></tr>
+	       		<tr><td>0000 UTC SEP 03</td></tr>
+	       		<tr><td>Storm Location:</td></tr>
+	       		<tr><td> <B>18.5 N, -45.5 W</B> </td></tr>
+	       		<tr><td>Min Sea Level Pressure:</td></tr>
+	       		<tr><td>973 mb; 28.73 in Hg</td></tr>
+	       		<tr><td>Maxium Intensity:</td></tr>
+	       		<tr><td>95 knots;  109 mph;  176 kph</td></tr></table>]]>
+	       </description>
+	       <styleUrl>#cat2</styleUrl>
+	       <Point>
+	   	   <coordinates>-45.5,18.5,0</coordinates>
+	       </Point>
+	       <lat>18.5</lat>
+	       <lon>-45.5</lon>
+	       <stormName>IRMA</stormName>
+	       <stormNum>11</stormNum>
+	       <basin>AL</basin>
+	       <stormType>HU</stormType>
+	       <intensity>95</intensity>
+	       <intensityMPH>109</intensityMPH>
+	       <intensityKPH>176</intensityKPH>
+	       <minSeaLevelPres>973</minSeaLevelPres>
+	       <atcfdtg>2017090300</atcfdtg>
+	       <dtg>0000 UTC SEP 03</dtg>
+	   </Placemark>
+
+	   <Placemark>
+	      <name>0600 UTC SEP 03</name>
+	      <Snippet maxLines="0">empty</Snippet>
+	      <description>
+	   	  <![CDATA[<table>
+	       		<tr><td>HU IRMA (AL112017)</td></tr>
+	       		<tr><td><hr></td></tr>
+	       		<tr><td>0600 UTC SEP 03</td></tr>
+	       		<tr><td>Storm Location:</td></tr>
+	       		<tr><td> <B>18.2 N, -46.7 W</B> </td></tr>
+	       		<tr><td>Min Sea Level Pressure:</td></tr>
+	       		<tr><td>973 mb; 28.73 in Hg</td></tr>
+	       		<tr><td>Maxium Intensity:</td></tr>
+	       		<tr><td>95 knots;  109 mph;  176 kph</td></tr></table>]]>
+	       </description>
+	       <styleUrl>#cat2</styleUrl>
+	       <Point>
+	   	   <coordinates>-46.7,18.2,0</coordinates>
+	       </Point>
+	       <lat>18.2</lat>
+	       <lon>-46.7</lon>
+	       <stormName>IRMA</stormName>
+	       <stormNum>11</stormNum>
+	       <basin>AL</basin>
+	       <stormType>HU</stormType>
+	       <intensity>95</intensity>
+	       <intensityMPH>109</intensityMPH>
+	       <intensityKPH>176</intensityKPH>
+	       <minSeaLevelPres>973</minSeaLevelPres>
+	       <atcfdtg>2017090306</atcfdtg>
+	       <dtg>0600 UTC SEP 03</dtg>
+	   </Placemark>
+
+	   <Placemark>
+	      <name>1200 UTC SEP 03</name>
+	      <Snippet maxLines="0">empty</Snippet>
+	      <description>
+	   	  <![CDATA[<table>
+	       		<tr><td>HU IRMA (AL112017)</td></tr>
+	       		<tr><td><hr></td></tr>
+	       		<tr><td>1200 UTC SEP 03</td></tr>
+	       		<tr><td>Storm Location:</td></tr>
+	       		<tr><td> <B>17.9 N, -47.9 W</B> </td></tr>
+	       		<tr><td>Min Sea Level Pressure:</td></tr>
+	       		<tr><td>969 mb; 28.61 in Hg</td></tr>
+	       		<tr><td>Maxium Intensity:</td></tr>
+	       		<tr><td>100 knots;  115 mph;  185 kph</td></tr></table>]]>
+	       </description>
+	       <styleUrl>#cat3</styleUrl>
+	       <Point>
+	   	   <coordinates>-47.9,17.9,0</coordinates>
+	       </Point>
+	       <lat>17.9</lat>
+	       <lon>-47.9</lon>
+	       <stormName>IRMA</stormName>
+	       <stormNum>11</stormNum>
+	       <basin>AL</basin>
+	       <stormType>HU</stormType>
+	       <intensity>100</intensity>
+	       <intensityMPH>115</intensityMPH>
+	       <intensityKPH>185</intensityKPH>
+	       <minSeaLevelPres>969</minSeaLevelPres>
+	       <atcfdtg>2017090312</atcfdtg>
+	       <dtg>1200 UTC SEP 03</dtg>
+	   </Placemark>
+
+	   <Placemark>
+	      <name>1800 UTC SEP 03</name>
+	      <Snippet maxLines="0">empty</Snippet>
+	      <description>
+	   	  <![CDATA[<table>
+	       		<tr><td>HU IRMA (AL112017)</td></tr>
+	       		<tr><td><hr></td></tr>
+	       		<tr><td>1800 UTC SEP 03</td></tr>
+	       		<tr><td>Storm Location:</td></tr>
+	       		<tr><td> <B>17.7 N, -49.2 W</B> </td></tr>
+	       		<tr><td>Min Sea Level Pressure:</td></tr>
+	       		<tr><td>965 mb; 28.49 in Hg</td></tr>
+	       		<tr><td>Maxium Intensity:</td></tr>
+	       		<tr><td>100 knots;  115 mph;  185 kph</td></tr></table>]]>
+	       </description>
+	       <styleUrl>#cat3</styleUrl>
+	       <Point>
+	   	   <coordinates>-49.2,17.7,0</coordinates>
+	       </Point>
+	       <lat>17.7</lat>
+	       <lon>-49.2</lon>
+	       <stormName>IRMA</stormName>
+	       <stormNum>11</stormNum>
+	       <basin>AL</basin>
+	       <stormType>HU</stormType>
+	       <intensity>100</intensity>
+	       <intensityMPH>115</intensityMPH>
+	       <intensityKPH>185</intensityKPH>
+	       <minSeaLevelPres>965</minSeaLevelPres>
+	       <atcfdtg>2017090318</atcfdtg>
+	       <dtg>1800 UTC SEP 03</dtg>
+	   </Placemark>
+
+	   <Placemark>
+	      <name>0000 UTC SEP 04</name>
+	      <Snippet maxLines="0">empty</Snippet>
+	      <description>
+	   	  <![CDATA[<table>
+	       		<tr><td>HU IRMA (AL112017)</td></tr>
+	       		<tr><td><hr></td></tr>
+	       		<tr><td>0000 UTC SEP 04</td></tr>
+	       		<tr><td>Storm Location:</td></tr>
+	       		<tr><td> <B>17.3 N, -50.4 W</B> </td></tr>
+	       		<tr><td>Min Sea Level Pressure:</td></tr>
+	       		<tr><td>959 mb; 28.31 in Hg</td></tr>
+	       		<tr><td>Maxium Intensity:</td></tr>
+	       		<tr><td>100 knots;  115 mph;  185 kph</td></tr></table>]]>
+	       </description>
+	       <styleUrl>#cat3</styleUrl>
+	       <Point>
+	   	   <coordinates>-50.4,17.3,0</coordinates>
+	       </Point>
+	       <lat>17.3</lat>
+	       <lon>-50.4</lon>
+	       <stormName>IRMA</stormName>
+	       <stormNum>11</stormNum>
+	       <basin>AL</basin>
+	       <stormType>HU</stormType>
+	       <intensity>100</intensity>
+	       <intensityMPH>115</intensityMPH>
+	       <intensityKPH>185</intensityKPH>
+	       <minSeaLevelPres>959</minSeaLevelPres>
+	       <atcfdtg>2017090400</atcfdtg>
+	       <dtg>0000 UTC SEP 04</dtg>
+	   </Placemark>
+
+	   <Placemark>
+	      <name>0600 UTC SEP 04</name>
+	      <Snippet maxLines="0">empty</Snippet>
+	      <description>
+	   	  <![CDATA[<table>
+	       		<tr><td>HU IRMA (AL112017)</td></tr>
+	       		<tr><td><hr></td></tr>
+	       		<tr><td>0600 UTC SEP 04</td></tr>
+	       		<tr><td>Storm Location:</td></tr>
+	       		<tr><td> <B>17.0 N, -51.7 W</B> </td></tr>
+	       		<tr><td>Min Sea Level Pressure:</td></tr>
+	       		<tr><td>961 mb; 28.37 in Hg</td></tr>
+	       		<tr><td>Maxium Intensity:</td></tr>
+	       		<tr><td>100 knots;  115 mph;  185 kph</td></tr></table>]]>
+	       </description>
+	       <styleUrl>#cat3</styleUrl>
+	       <Point>
+	   	   <coordinates>-51.7,17.0,0</coordinates>
+	       </Point>
+	       <lat>17.0</lat>
+	       <lon>-51.7</lon>
+	       <stormName>IRMA</stormName>
+	       <stormNum>11</stormNum>
+	       <basin>AL</basin>
+	       <stormType>HU</stormType>
+	       <intensity>100</intensity>
+	       <intensityMPH>115</intensityMPH>
+	       <intensityKPH>185</intensityKPH>
+	       <minSeaLevelPres>961</minSeaLevelPres>
+	       <atcfdtg>2017090406</atcfdtg>
+	       <dtg>0600 UTC SEP 04</dtg>
+	   </Placemark>
+
+	   <Placemark>
+	      <name>1200 UTC SEP 04</name>
+	      <Snippet maxLines="0">empty</Snippet>
+	      <description>
+	   	  <![CDATA[<table>
+	       		<tr><td>HU IRMA (AL112017)</td></tr>
+	       		<tr><td><hr></td></tr>
+	       		<tr><td>1200 UTC SEP 04</td></tr>
+	       		<tr><td>Storm Location:</td></tr>
+	       		<tr><td> <B>16.8 N, -52.6 W</B> </td></tr>
+	       		<tr><td>Min Sea Level Pressure:</td></tr>
+	       		<tr><td>944 mb; 27.87 in Hg</td></tr>
+	       		<tr><td>Maxium Intensity:</td></tr>
+	       		<tr><td>105 knots;  121 mph;  194 kph</td></tr></table>]]>
+	       </description>
+	       <styleUrl>#cat3</styleUrl>
+	       <Point>
+	   	   <coordinates>-52.6,16.8,0</coordinates>
+	       </Point>
+	       <lat>16.8</lat>
+	       <lon>-52.6</lon>
+	       <stormName>IRMA</stormName>
+	       <stormNum>11</stormNum>
+	       <basin>AL</basin>
+	       <stormType>HU</stormType>
+	       <intensity>105</intensity>
+	       <intensityMPH>121</intensityMPH>
+	       <intensityKPH>194</intensityKPH>
+	       <minSeaLevelPres>944</minSeaLevelPres>
+	       <atcfdtg>2017090412</atcfdtg>
+	       <dtg>1200 UTC SEP 04</dtg>
+	   </Placemark>
+
+	   <Placemark>
+	      <name>1800 UTC SEP 04</name>
+	      <Snippet maxLines="0">empty</Snippet>
+	      <description>
+	   	  <![CDATA[<table>
+	       		<tr><td>HU IRMA (AL112017)</td></tr>
+	       		<tr><td><hr></td></tr>
+	       		<tr><td>1800 UTC SEP 04</td></tr>
+	       		<tr><td>Storm Location:</td></tr>
+	       		<tr><td> <B>16.7 N, -53.9 W</B> </td></tr>
+	       		<tr><td>Min Sea Level Pressure:</td></tr>
+	       		<tr><td>944 mb; 27.87 in Hg</td></tr>
+	       		<tr><td>Maxium Intensity:</td></tr>
+	       		<tr><td>115 knots;  132 mph;  213 kph</td></tr></table>]]>
+	       </description>
+	       <styleUrl>#cat4</styleUrl>
+	       <Point>
+	   	   <coordinates>-53.9,16.7,0</coordinates>
+	       </Point>
+	       <lat>16.7</lat>
+	       <lon>-53.9</lon>
+	       <stormName>IRMA</stormName>
+	       <stormNum>11</stormNum>
+	       <basin>AL</basin>
+	       <stormType>HU</stormType>
+	       <intensity>115</intensity>
+	       <intensityMPH>132</intensityMPH>
+	       <intensityKPH>213</intensityKPH>
+	       <minSeaLevelPres>944</minSeaLevelPres>
+	       <atcfdtg>2017090418</atcfdtg>
+	       <dtg>1800 UTC SEP 04</dtg>
+	   </Placemark>
+
+	   <Placemark>
+	      <name>0000 UTC SEP 05</name>
+	      <Snippet maxLines="0">empty</Snippet>
+	      <description>
+	   	  <![CDATA[<table>
+	       		<tr><td>HU IRMA (AL112017)</td></tr>
+	       		<tr><td><hr></td></tr>
+	       		<tr><td>0000 UTC SEP 05</td></tr>
+	       		<tr><td>Storm Location:</td></tr>
+	       		<tr><td> <B>16.7 N, -55.1 W</B> </td></tr>
+	       		<tr><td>Min Sea Level Pressure:</td></tr>
+	       		<tr><td>943 mb; 27.84 in Hg</td></tr>
+	       		<tr><td>Maxium Intensity:</td></tr>
+	       		<tr><td>120 knots;  138 mph;  222 kph</td></tr></table>]]>
+	       </description>
+	       <styleUrl>#cat4</styleUrl>
+	       <Point>
+	   	   <coordinates>-55.1,16.7,0</coordinates>
+	       </Point>
+	       <lat>16.7</lat>
+	       <lon>-55.1</lon>
+	       <stormName>IRMA</stormName>
+	       <stormNum>11</stormNum>
+	       <basin>AL</basin>
+	       <stormType>HU</stormType>
+	       <intensity>120</intensity>
+	       <intensityMPH>138</intensityMPH>
+	       <intensityKPH>222</intensityKPH>
+	       <minSeaLevelPres>943</minSeaLevelPres>
+	       <atcfdtg>2017090500</atcfdtg>
+	       <dtg>0000 UTC SEP 05</dtg>
+	   </Placemark>
+
+	   <Placemark>
+	      <name>0600 UTC SEP 05</name>
+	      <Snippet maxLines="0">empty</Snippet>
+	      <description>
+	   	  <![CDATA[<table>
+	       		<tr><td>HU IRMA (AL112017)</td></tr>
+	       		<tr><td><hr></td></tr>
+	       		<tr><td>0600 UTC SEP 05</td></tr>
+	       		<tr><td>Storm Location:</td></tr>
+	       		<tr><td> <B>16.6 N, -56.4 W</B> </td></tr>
+	       		<tr><td>Min Sea Level Pressure:</td></tr>
+	       		<tr><td>929 mb; 27.43 in Hg</td></tr>
+	       		<tr><td>Maxium Intensity:</td></tr>
+	       		<tr><td>135 knots;  155 mph;  250 kph</td></tr></table>]]>
+	       </description>
+	       <styleUrl>#cat4</styleUrl>
+	       <Point>
+	   	   <coordinates>-56.4,16.6,0</coordinates>
+	       </Point>
+	       <lat>16.6</lat>
+	       <lon>-56.4</lon>
+	       <stormName>IRMA</stormName>
+	       <stormNum>11</stormNum>
+	       <basin>AL</basin>
+	       <stormType>HU</stormType>
+	       <intensity>135</intensity>
+	       <intensityMPH>155</intensityMPH>
+	       <intensityKPH>250</intensityKPH>
+	       <minSeaLevelPres>929</minSeaLevelPres>
+	       <atcfdtg>2017090506</atcfdtg>
+	       <dtg>0600 UTC SEP 05</dtg>
+	   </Placemark>
+
+	   <Placemark>
+	      <name>1200 UTC SEP 05</name>
+	      <Snippet maxLines="0">empty</Snippet>
+	      <description>
+	   	  <![CDATA[<table>
+	       		<tr><td>HU IRMA (AL112017)</td></tr>
+	       		<tr><td><hr></td></tr>
+	       		<tr><td>1200 UTC SEP 05</td></tr>
+	       		<tr><td>Storm Location:</td></tr>
+	       		<tr><td> <B>16.7 N, -57.8 W</B> </td></tr>
+	       		<tr><td>Min Sea Level Pressure:</td></tr>
+	       		<tr><td>929 mb; 27.43 in Hg</td></tr>
+	       		<tr><td>Maxium Intensity:</td></tr>
+	       		<tr><td>155 knots;  178 mph;  287 kph</td></tr></table>]]>
+	       </description>
+	       <styleUrl>#cat5</styleUrl>
+	       <Point>
+	   	   <coordinates>-57.8,16.7,0</coordinates>
+	       </Point>
+	       <lat>16.7</lat>
+	       <lon>-57.8</lon>
+	       <stormName>IRMA</stormName>
+	       <stormNum>11</stormNum>
+	       <basin>AL</basin>
+	       <stormType>HU</stormType>
+	       <intensity>155</intensity>
+	       <intensityMPH>178</intensityMPH>
+	       <intensityKPH>287</intensityKPH>
+	       <minSeaLevelPres>929</minSeaLevelPres>
+	       <atcfdtg>2017090512</atcfdtg>
+	       <dtg>1200 UTC SEP 05</dtg>
+	   </Placemark>
+
+	   <Placemark>
+	      <name>1800 UTC SEP 05</name>
+	      <Snippet maxLines="0">empty</Snippet>
+	      <description>
+	   	  <![CDATA[<table>
+	       		<tr><td>HU IRMA (AL112017)</td></tr>
+	       		<tr><td><hr></td></tr>
+	       		<tr><td>1800 UTC SEP 05</td></tr>
+	       		<tr><td>Storm Location:</td></tr>
+	       		<tr><td> <B>16.9 N, -59.2 W</B> </td></tr>
+	       		<tr><td>Min Sea Level Pressure:</td></tr>
+	       		<tr><td>926 mb; 27.34 in Hg</td></tr>
+	       		<tr><td>Maxium Intensity:</td></tr>
+	       		<tr><td>160 knots;  184 mph;  296 kph</td></tr></table>]]>
+	       </description>
+	       <styleUrl>#cat5</styleUrl>
+	       <Point>
+	   	   <coordinates>-59.2,16.9,0</coordinates>
+	       </Point>
+	       <lat>16.9</lat>
+	       <lon>-59.2</lon>
+	       <stormName>IRMA</stormName>
+	       <stormNum>11</stormNum>
+	       <basin>AL</basin>
+	       <stormType>HU</stormType>
+	       <intensity>160</intensity>
+	       <intensityMPH>184</intensityMPH>
+	       <intensityKPH>296</intensityKPH>
+	       <minSeaLevelPres>926</minSeaLevelPres>
+	       <atcfdtg>2017090518</atcfdtg>
+	       <dtg>1800 UTC SEP 05</dtg>
+	   </Placemark>
+
+	   <Placemark>
+	      <name>0000 UTC SEP 06</name>
+	      <Snippet maxLines="0">empty</Snippet>
+	      <description>
+	   	  <![CDATA[<table>
+	       		<tr><td>HU IRMA (AL112017)</td></tr>
+	       		<tr><td><hr></td></tr>
+	       		<tr><td>0000 UTC SEP 06</td></tr>
+	       		<tr><td>Storm Location:</td></tr>
+	       		<tr><td> <B>17.2 N, -60.4 W</B> </td></tr>
+	       		<tr><td>Min Sea Level Pressure:</td></tr>
+	       		<tr><td>915 mb; 27.01 in Hg</td></tr>
+	       		<tr><td>Maxium Intensity:</td></tr>
+	       		<tr><td>160 knots;  184 mph;  296 kph</td></tr></table>]]>
+	       </description>
+	       <styleUrl>#cat5</styleUrl>
+	       <Point>
+	   	   <coordinates>-60.4,17.2,0</coordinates>
+	       </Point>
+	       <lat>17.2</lat>
+	       <lon>-60.4</lon>
+	       <stormName>IRMA</stormName>
+	       <stormNum>11</stormNum>
+	       <basin>AL</basin>
+	       <stormType>HU</stormType>
+	       <intensity>160</intensity>
+	       <intensityMPH>184</intensityMPH>
+	       <intensityKPH>296</intensityKPH>
+	       <minSeaLevelPres>915</minSeaLevelPres>
+	       <atcfdtg>2017090600</atcfdtg>
+	       <dtg>0000 UTC SEP 06</dtg>
+	   </Placemark>
+
+	   <Placemark>
+	      <name>0600 UTC SEP 06</name>
+	      <Snippet maxLines="0">empty</Snippet>
+	      <description>
+	   	  <![CDATA[<table>
+	       		<tr><td>HU IRMA (AL112017)</td></tr>
+	       		<tr><td><hr></td></tr>
+	       		<tr><td>0600 UTC SEP 06</td></tr>
+	       		<tr><td>Storm Location:</td></tr>
+	       		<tr><td> <B>17.7 N, -61.9 W</B> </td></tr>
+	       		<tr><td>Min Sea Level Pressure:</td></tr>
+	       		<tr><td>914 mb; 26.99 in Hg</td></tr>
+	       		<tr><td>Maxium Intensity:</td></tr>
+	       		<tr><td>160 knots;  184 mph;  296 kph</td></tr></table>]]>
+	       </description>
+	       <styleUrl>#cat5</styleUrl>
+	       <Point>
+	   	   <coordinates>-61.9,17.7,0</coordinates>
+	       </Point>
+	       <lat>17.7</lat>
+	       <lon>-61.9</lon>
+	       <stormName>IRMA</stormName>
+	       <stormNum>11</stormNum>
+	       <basin>AL</basin>
+	       <stormType>HU</stormType>
+	       <intensity>160</intensity>
+	       <intensityMPH>184</intensityMPH>
+	       <intensityKPH>296</intensityKPH>
+	       <minSeaLevelPres>914</minSeaLevelPres>
+	       <atcfdtg>2017090606</atcfdtg>
+	       <dtg>0600 UTC SEP 06</dtg>
+	   </Placemark>
+
+	   <Placemark>
+	      <name>1200 UTC SEP 06</name>
+	      <Snippet maxLines="0">empty</Snippet>
+	      <description>
+	   	  <![CDATA[<table>
+	       		<tr><td>HU IRMA (AL112017)</td></tr>
+	       		<tr><td><hr></td></tr>
+	       		<tr><td>1200 UTC SEP 06</td></tr>
+	       		<tr><td>Storm Location:</td></tr>
+	       		<tr><td> <B>18.1 N, -63.3 W</B> </td></tr>
+	       		<tr><td>Min Sea Level Pressure:</td></tr>
+	       		<tr><td>918 mb; 27.10 in Hg</td></tr>
+	       		<tr><td>Maxium Intensity:</td></tr>
+	       		<tr><td>160 knots;  184 mph;  296 kph</td></tr></table>]]>
+	       </description>
+	       <styleUrl>#cat5</styleUrl>
+	       <Point>
+	   	   <coordinates>-63.3,18.1,0</coordinates>
+	       </Point>
+	       <lat>18.1</lat>
+	       <lon>-63.3</lon>
+	       <stormName>IRMA</stormName>
+	       <stormNum>11</stormNum>
+	       <basin>AL</basin>
+	       <stormType>HU</stormType>
+	       <intensity>160</intensity>
+	       <intensityMPH>184</intensityMPH>
+	       <intensityKPH>296</intensityKPH>
+	       <minSeaLevelPres>918</minSeaLevelPres>
+	       <atcfdtg>2017090612</atcfdtg>
+	       <dtg>1200 UTC SEP 06</dtg>
+	   </Placemark>
+
+	   <Placemark>
+	      <name>1800 UTC SEP 06</name>
+	      <Snippet maxLines="0">empty</Snippet>
+	      <description>
+	   	  <![CDATA[<table>
+	       		<tr><td>HU IRMA (AL112017)</td></tr>
+	       		<tr><td><hr></td></tr>
+	       		<tr><td>1800 UTC SEP 06</td></tr>
+	       		<tr><td>Storm Location:</td></tr>
+	       		<tr><td> <B>18.5 N, -64.7 W</B> </td></tr>
+	       		<tr><td>Min Sea Level Pressure:</td></tr>
+	       		<tr><td>918 mb; 27.10 in Hg</td></tr>
+	       		<tr><td>Maxium Intensity:</td></tr>
+	       		<tr><td>160 knots;  184 mph;  296 kph</td></tr></table>]]>
+	       </description>
+	       <styleUrl>#cat5</styleUrl>
+	       <Point>
+	   	   <coordinates>-64.7,18.5,0</coordinates>
+	       </Point>
+	       <lat>18.5</lat>
+	       <lon>-64.7</lon>
+	       <stormName>IRMA</stormName>
+	       <stormNum>11</stormNum>
+	       <basin>AL</basin>
+	       <stormType>HU</stormType>
+	       <intensity>160</intensity>
+	       <intensityMPH>184</intensityMPH>
+	       <intensityKPH>296</intensityKPH>
+	       <minSeaLevelPres>918</minSeaLevelPres>
+	       <atcfdtg>2017090618</atcfdtg>
+	       <dtg>1800 UTC SEP 06</dtg>
+	   </Placemark>
+
+	   <Placemark>
+	      <name>0000 UTC SEP 07</name>
+	      <Snippet maxLines="0">empty</Snippet>
+	      <description>
+	   	  <![CDATA[<table>
+	       		<tr><td>HU IRMA (AL112017)</td></tr>
+	       		<tr><td><hr></td></tr>
+	       		<tr><td>0000 UTC SEP 07</td></tr>
+	       		<tr><td>Storm Location:</td></tr>
+	       		<tr><td> <B>19.1 N, -66.0 W</B> </td></tr>
+	       		<tr><td>Min Sea Level Pressure:</td></tr>
+	       		<tr><td>916 mb; 27.04 in Hg</td></tr>
+	       		<tr><td>Maxium Intensity:</td></tr>
+	       		<tr><td>160 knots;  184 mph;  296 kph</td></tr></table>]]>
+	       </description>
+	       <styleUrl>#cat5</styleUrl>
+	       <Point>
+	   	   <coordinates>-66.0,19.1,0</coordinates>
+	       </Point>
+	       <lat>19.1</lat>
+	       <lon>-66.0</lon>
+	       <stormName>IRMA</stormName>
+	       <stormNum>11</stormNum>
+	       <basin>AL</basin>
+	       <stormType>HU</stormType>
+	       <intensity>160</intensity>
+	       <intensityMPH>184</intensityMPH>
+	       <intensityKPH>296</intensityKPH>
+	       <minSeaLevelPres>916</minSeaLevelPres>
+	       <atcfdtg>2017090700</atcfdtg>
+	       <dtg>0000 UTC SEP 07</dtg>
+	   </Placemark>
+
+	   <Placemark>
+	      <name>0600 UTC SEP 07</name>
+	      <Snippet maxLines="0">empty</Snippet>
+	      <description>
+	   	  <![CDATA[<table>
+	       		<tr><td>HU IRMA (AL112017)</td></tr>
+	       		<tr><td><hr></td></tr>
+	       		<tr><td>0600 UTC SEP 07</td></tr>
+	       		<tr><td>Storm Location:</td></tr>
+	       		<tr><td> <B>19.7 N, -67.7 W</B> </td></tr>
+	       		<tr><td>Min Sea Level Pressure:</td></tr>
+	       		<tr><td>921 mb; 27.19 in Hg</td></tr>
+	       		<tr><td>Maxium Intensity:</td></tr>
+	       		<tr><td>155 knots;  178 mph;  287 kph</td></tr></table>]]>
+	       </description>
+	       <styleUrl>#cat5</styleUrl>
+	       <Point>
+	   	   <coordinates>-67.7,19.7,0</coordinates>
+	       </Point>
+	       <lat>19.7</lat>
+	       <lon>-67.7</lon>
+	       <stormName>IRMA</stormName>
+	       <stormNum>11</stormNum>
+	       <basin>AL</basin>
+	       <stormType>HU</stormType>
+	       <intensity>155</intensity>
+	       <intensityMPH>178</intensityMPH>
+	       <intensityKPH>287</intensityKPH>
+	       <minSeaLevelPres>921</minSeaLevelPres>
+	       <atcfdtg>2017090706</atcfdtg>
+	       <dtg>0600 UTC SEP 07</dtg>
+	   </Placemark>
+
+	   <Placemark>
+	      <name>1200 UTC SEP 07</name>
+	      <Snippet maxLines="0">empty</Snippet>
+	      <description>
+	   	  <![CDATA[<table>
+	       		<tr><td>HU IRMA (AL112017)</td></tr>
+	       		<tr><td><hr></td></tr>
+	       		<tr><td>1200 UTC SEP 07</td></tr>
+	       		<tr><td>Storm Location:</td></tr>
+	       		<tr><td> <B>20.1 N, -69.0 W</B> </td></tr>
+	       		<tr><td>Min Sea Level Pressure:</td></tr>
+	       		<tr><td>921 mb; 27.19 in Hg</td></tr>
+	       		<tr><td>Maxium Intensity:</td></tr>
+	       		<tr><td>150 knots;  173 mph;  278 kph</td></tr></table>]]>
+	       </description>
+	       <styleUrl>#cat5</styleUrl>
+	       <Point>
+	   	   <coordinates>-69.0,20.1,0</coordinates>
+	       </Point>
+	       <lat>20.1</lat>
+	       <lon>-69.0</lon>
+	       <stormName>IRMA</stormName>
+	       <stormNum>11</stormNum>
+	       <basin>AL</basin>
+	       <stormType>HU</stormType>
+	       <intensity>150</intensity>
+	       <intensityMPH>173</intensityMPH>
+	       <intensityKPH>278</intensityKPH>
+	       <minSeaLevelPres>921</minSeaLevelPres>
+	       <atcfdtg>2017090712</atcfdtg>
+	       <dtg>1200 UTC SEP 07</dtg>
+	   </Placemark>
+
+	   <Placemark>
+	      <name>1800 UTC SEP 07</name>
+	      <Snippet maxLines="0">empty</Snippet>
+	      <description>
+	   	  <![CDATA[<table>
+	       		<tr><td>HU IRMA (AL112017)</td></tr>
+	       		<tr><td><hr></td></tr>
+	       		<tr><td>1800 UTC SEP 07</td></tr>
+	       		<tr><td>Storm Location:</td></tr>
+	       		<tr><td> <B>20.7 N, -70.4 W</B> </td></tr>
+	       		<tr><td>Min Sea Level Pressure:</td></tr>
+	       		<tr><td>922 mb; 27.22 in Hg</td></tr>
+	       		<tr><td>Maxium Intensity:</td></tr>
+	       		<tr><td>150 knots;  173 mph;  278 kph</td></tr></table>]]>
+	       </description>
+	       <styleUrl>#cat5</styleUrl>
+	       <Point>
+	   	   <coordinates>-70.4,20.7,0</coordinates>
+	       </Point>
+	       <lat>20.7</lat>
+	       <lon>-70.4</lon>
+	       <stormName>IRMA</stormName>
+	       <stormNum>11</stormNum>
+	       <basin>AL</basin>
+	       <stormType>HU</stormType>
+	       <intensity>150</intensity>
+	       <intensityMPH>173</intensityMPH>
+	       <intensityKPH>278</intensityKPH>
+	       <minSeaLevelPres>922</minSeaLevelPres>
+	       <atcfdtg>2017090718</atcfdtg>
+	       <dtg>1800 UTC SEP 07</dtg>
+	   </Placemark>
+
+	   <Placemark>
+	      <name>0000 UTC SEP 08</name>
+	      <Snippet maxLines="0">empty</Snippet>
+	      <description>
+	   	  <![CDATA[<table>
+	       		<tr><td>HU IRMA (AL112017)</td></tr>
+	       		<tr><td><hr></td></tr>
+	       		<tr><td>0000 UTC SEP 08</td></tr>
+	       		<tr><td>Storm Location:</td></tr>
+	       		<tr><td> <B>21.1 N, -71.8 W</B> </td></tr>
+	       		<tr><td>Min Sea Level Pressure:</td></tr>
+	       		<tr><td>919 mb; 27.13 in Hg</td></tr>
+	       		<tr><td>Maxium Intensity:</td></tr>
+	       		<tr><td>150 knots;  173 mph;  278 kph</td></tr></table>]]>
+	       </description>
+	       <styleUrl>#cat5</styleUrl>
+	       <Point>
+	   	   <coordinates>-71.8,21.1,0</coordinates>
+	       </Point>
+	       <lat>21.1</lat>
+	       <lon>-71.8</lon>
+	       <stormName>IRMA</stormName>
+	       <stormNum>11</stormNum>
+	       <basin>AL</basin>
+	       <stormType>HU</stormType>
+	       <intensity>150</intensity>
+	       <intensityMPH>173</intensityMPH>
+	       <intensityKPH>278</intensityKPH>
+	       <minSeaLevelPres>919</minSeaLevelPres>
+	       <atcfdtg>2017090800</atcfdtg>
+	       <dtg>0000 UTC SEP 08</dtg>
+	   </Placemark>
+
+	   <Placemark>
+	      <name>0600 UTC SEP 08</name>
+	      <Snippet maxLines="0">empty</Snippet>
+	      <description>
+	   	  <![CDATA[<table>
+	       		<tr><td>HU IRMA (AL112017)</td></tr>
+	       		<tr><td><hr></td></tr>
+	       		<tr><td>0600 UTC SEP 08</td></tr>
+	       		<tr><td>Storm Location:</td></tr>
+	       		<tr><td> <B>21.5 N, -73.2 W</B> </td></tr>
+	       		<tr><td>Min Sea Level Pressure:</td></tr>
+	       		<tr><td>925 mb; 27.31 in Hg</td></tr>
+	       		<tr><td>Maxium Intensity:</td></tr>
+	       		<tr><td>140 knots;  161 mph;  259 kph</td></tr></table>]]>
+	       </description>
+	       <styleUrl>#cat5</styleUrl>
+	       <Point>
+	   	   <coordinates>-73.2,21.5,0</coordinates>
+	       </Point>
+	       <lat>21.5</lat>
+	       <lon>-73.2</lon>
+	       <stormName>IRMA</stormName>
+	       <stormNum>11</stormNum>
+	       <basin>AL</basin>
+	       <stormType>HU</stormType>
+	       <intensity>140</intensity>
+	       <intensityMPH>161</intensityMPH>
+	       <intensityKPH>259</intensityKPH>
+	       <minSeaLevelPres>925</minSeaLevelPres>
+	       <atcfdtg>2017090806</atcfdtg>
+	       <dtg>0600 UTC SEP 08</dtg>
+	   </Placemark>
+
+	   <Placemark>
+	      <name>1200 UTC SEP 08</name>
+	      <Snippet maxLines="0">empty</Snippet>
+	      <description>
+	   	  <![CDATA[<table>
+	       		<tr><td>HU IRMA (AL112017)</td></tr>
+	       		<tr><td><hr></td></tr>
+	       		<tr><td>1200 UTC SEP 08</td></tr>
+	       		<tr><td>Storm Location:</td></tr>
+	       		<tr><td> <B>21.8 N, -74.7 W</B> </td></tr>
+	       		<tr><td>Min Sea Level Pressure:</td></tr>
+	       		<tr><td>927 mb; 27.37 in Hg</td></tr>
+	       		<tr><td>Maxium Intensity:</td></tr>
+	       		<tr><td>130 knots;  150 mph;  241 kph</td></tr></table>]]>
+	       </description>
+	       <styleUrl>#cat4</styleUrl>
+	       <Point>
+	   	   <coordinates>-74.7,21.8,0</coordinates>
+	       </Point>
+	       <lat>21.8</lat>
+	       <lon>-74.7</lon>
+	       <stormName>IRMA</stormName>
+	       <stormNum>11</stormNum>
+	       <basin>AL</basin>
+	       <stormType>HU</stormType>
+	       <intensity>130</intensity>
+	       <intensityMPH>150</intensityMPH>
+	       <intensityKPH>241</intensityKPH>
+	       <minSeaLevelPres>927</minSeaLevelPres>
+	       <atcfdtg>2017090812</atcfdtg>
+	       <dtg>1200 UTC SEP 08</dtg>
+	   </Placemark>
+
+	   <Placemark>
+	      <name>1800 UTC SEP 08</name>
+	      <Snippet maxLines="0">empty</Snippet>
+	      <description>
+	   	  <![CDATA[<table>
+	       		<tr><td>HU IRMA (AL112017)</td></tr>
+	       		<tr><td><hr></td></tr>
+	       		<tr><td>1800 UTC SEP 08</td></tr>
+	       		<tr><td>Storm Location:</td></tr>
+	       		<tr><td> <B>22.0 N, -76.0 W</B> </td></tr>
+	       		<tr><td>Min Sea Level Pressure:</td></tr>
+	       		<tr><td>925 mb; 27.31 in Hg</td></tr>
+	       		<tr><td>Maxium Intensity:</td></tr>
+	       		<tr><td>135 knots;  155 mph;  250 kph</td></tr></table>]]>
+	       </description>
+	       <styleUrl>#cat4</styleUrl>
+	       <Point>
+	   	   <coordinates>-76.0,22.0,0</coordinates>
+	       </Point>
+	       <lat>22.0</lat>
+	       <lon>-76.0</lon>
+	       <stormName>IRMA</stormName>
+	       <stormNum>11</stormNum>
+	       <basin>AL</basin>
+	       <stormType>HU</stormType>
+	       <intensity>135</intensity>
+	       <intensityMPH>155</intensityMPH>
+	       <intensityKPH>250</intensityKPH>
+	       <minSeaLevelPres>925</minSeaLevelPres>
+	       <atcfdtg>2017090818</atcfdtg>
+	       <dtg>1800 UTC SEP 08</dtg>
+	   </Placemark>
+
+	   <Placemark>
+	      <name>0000 UTC SEP 09</name>
+	      <Snippet maxLines="0">empty</Snippet>
+	      <description>
+	   	  <![CDATA[<table>
+	       		<tr><td>HU IRMA (AL112017)</td></tr>
+	       		<tr><td><hr></td></tr>
+	       		<tr><td>0000 UTC SEP 09</td></tr>
+	       		<tr><td>Storm Location:</td></tr>
+	       		<tr><td> <B>22.1 N, -77.2 W</B> </td></tr>
+	       		<tr><td>Min Sea Level Pressure:</td></tr>
+	       		<tr><td>924 mb; 27.28 in Hg</td></tr>
+	       		<tr><td>Maxium Intensity:</td></tr>
+	       		<tr><td>140 knots;  161 mph;  259 kph</td></tr></table>]]>
+	       </description>
+	       <styleUrl>#cat5</styleUrl>
+	       <Point>
+	   	   <coordinates>-77.2,22.1,0</coordinates>
+	       </Point>
+	       <lat>22.1</lat>
+	       <lon>-77.2</lon>
+	       <stormName>IRMA</stormName>
+	       <stormNum>11</stormNum>
+	       <basin>AL</basin>
+	       <stormType>HU</stormType>
+	       <intensity>140</intensity>
+	       <intensityMPH>161</intensityMPH>
+	       <intensityKPH>259</intensityKPH>
+	       <minSeaLevelPres>924</minSeaLevelPres>
+	       <atcfdtg>2017090900</atcfdtg>
+	       <dtg>0000 UTC SEP 09</dtg>
+	   </Placemark>
+
+	   <Placemark>
+	      <name>0600 UTC SEP 09</name>
+	      <Snippet maxLines="0">empty</Snippet>
+	      <description>
+	   	  <![CDATA[<table>
+	       		<tr><td>HU IRMA (AL112017)</td></tr>
+	       		<tr><td><hr></td></tr>
+	       		<tr><td>0600 UTC SEP 09</td></tr>
+	       		<tr><td>Storm Location:</td></tr>
+	       		<tr><td> <B>22.3 N, -78.3 W</B> </td></tr>
+	       		<tr><td>Min Sea Level Pressure:</td></tr>
+	       		<tr><td>930 mb; 27.46 in Hg</td></tr>
+	       		<tr><td>Maxium Intensity:</td></tr>
+	       		<tr><td>140 knots;  161 mph;  259 kph</td></tr></table>]]>
+	       </description>
+	       <styleUrl>#cat5</styleUrl>
+	       <Point>
+	   	   <coordinates>-78.3,22.3,0</coordinates>
+	       </Point>
+	       <lat>22.3</lat>
+	       <lon>-78.3</lon>
+	       <stormName>IRMA</stormName>
+	       <stormNum>11</stormNum>
+	       <basin>AL</basin>
+	       <stormType>HU</stormType>
+	       <intensity>140</intensity>
+	       <intensityMPH>161</intensityMPH>
+	       <intensityKPH>259</intensityKPH>
+	       <minSeaLevelPres>930</minSeaLevelPres>
+	       <atcfdtg>2017090906</atcfdtg>
+	       <dtg>0600 UTC SEP 09</dtg>
+	   </Placemark>
+
+	   <Placemark>
+	      <name>1200 UTC SEP 09</name>
+	      <Snippet maxLines="0">empty</Snippet>
+	      <description>
+	   	  <![CDATA[<table>
+	       		<tr><td>HU IRMA (AL112017)</td></tr>
+	       		<tr><td><hr></td></tr>
+	       		<tr><td>1200 UTC SEP 09</td></tr>
+	       		<tr><td>Storm Location:</td></tr>
+	       		<tr><td> <B>22.7 N, -79.3 W</B> </td></tr>
+	       		<tr><td>Min Sea Level Pressure:</td></tr>
+	       		<tr><td>941 mb; 27.78 in Hg</td></tr>
+	       		<tr><td>Maxium Intensity:</td></tr>
+	       		<tr><td>115 knots;  132 mph;  213 kph</td></tr></table>]]>
+	       </description>
+	       <styleUrl>#cat4</styleUrl>
+	       <Point>
+	   	   <coordinates>-79.3,22.7,0</coordinates>
+	       </Point>
+	       <lat>22.7</lat>
+	       <lon>-79.3</lon>
+	       <stormName>IRMA</stormName>
+	       <stormNum>11</stormNum>
+	       <basin>AL</basin>
+	       <stormType>HU</stormType>
+	       <intensity>115</intensity>
+	       <intensityMPH>132</intensityMPH>
+	       <intensityKPH>213</intensityKPH>
+	       <minSeaLevelPres>941</minSeaLevelPres>
+	       <atcfdtg>2017090912</atcfdtg>
+	       <dtg>1200 UTC SEP 09</dtg>
+	   </Placemark>
+
+	   <Placemark>
+	      <name>1800 UTC SEP 09</name>
+	      <Snippet maxLines="0">empty</Snippet>
+	      <description>
+	   	  <![CDATA[<table>
+	       		<tr><td>HU IRMA (AL112017)</td></tr>
+	       		<tr><td><hr></td></tr>
+	       		<tr><td>1800 UTC SEP 09</td></tr>
+	       		<tr><td>Storm Location:</td></tr>
+	       		<tr><td> <B>23.1 N, -80.2 W</B> </td></tr>
+	       		<tr><td>Min Sea Level Pressure:</td></tr>
+	       		<tr><td>938 mb; 27.69 in Hg</td></tr>
+	       		<tr><td>Maxium Intensity:</td></tr>
+	       		<tr><td>110 knots;  127 mph;  204 kph</td></tr></table>]]>
+	       </description>
+	       <styleUrl>#cat3</styleUrl>
+	       <Point>
+	   	   <coordinates>-80.2,23.1,0</coordinates>
+	       </Point>
+	       <lat>23.1</lat>
+	       <lon>-80.2</lon>
+	       <stormName>IRMA</stormName>
+	       <stormNum>11</stormNum>
+	       <basin>AL</basin>
+	       <stormType>HU</stormType>
+	       <intensity>110</intensity>
+	       <intensityMPH>127</intensityMPH>
+	       <intensityKPH>204</intensityKPH>
+	       <minSeaLevelPres>938</minSeaLevelPres>
+	       <atcfdtg>2017090918</atcfdtg>
+	       <dtg>1800 UTC SEP 09</dtg>
+	   </Placemark>
+
+	   <Placemark>
+	      <name>0000 UTC SEP 10</name>
+	      <Snippet maxLines="0">empty</Snippet>
+	      <description>
+	   	  <![CDATA[<table>
+	       		<tr><td>HU IRMA (AL112017)</td></tr>
+	       		<tr><td><hr></td></tr>
+	       		<tr><td>0000 UTC SEP 10</td></tr>
+	       		<tr><td>Storm Location:</td></tr>
+	       		<tr><td> <B>23.4 N, -80.9 W</B> </td></tr>
+	       		<tr><td>Min Sea Level Pressure:</td></tr>
+	       		<tr><td>932 mb; 27.52 in Hg</td></tr>
+	       		<tr><td>Maxium Intensity:</td></tr>
+	       		<tr><td>105 knots;  121 mph;  194 kph</td></tr></table>]]>
+	       </description>
+	       <styleUrl>#cat3</styleUrl>
+	       <Point>
+	   	   <coordinates>-80.9,23.4,0</coordinates>
+	       </Point>
+	       <lat>23.4</lat>
+	       <lon>-80.9</lon>
+	       <stormName>IRMA</stormName>
+	       <stormNum>11</stormNum>
+	       <basin>AL</basin>
+	       <stormType>HU</stormType>
+	       <intensity>105</intensity>
+	       <intensityMPH>121</intensityMPH>
+	       <intensityKPH>194</intensityKPH>
+	       <minSeaLevelPres>932</minSeaLevelPres>
+	       <atcfdtg>2017091000</atcfdtg>
+	       <dtg>0000 UTC SEP 10</dtg>
+	   </Placemark>
+
+	   <Placemark>
+	      <name>0600 UTC SEP 10</name>
+	      <Snippet maxLines="0">empty</Snippet>
+	      <description>
+	   	  <![CDATA[<table>
+	       		<tr><td>HU IRMA (AL112017)</td></tr>
+	       		<tr><td><hr></td></tr>
+	       		<tr><td>0600 UTC SEP 10</td></tr>
+	       		<tr><td>Storm Location:</td></tr>
+	       		<tr><td> <B>23.7 N, -81.3 W</B> </td></tr>
+	       		<tr><td>Min Sea Level Pressure:</td></tr>
+	       		<tr><td>930 mb; 27.46 in Hg</td></tr>
+	       		<tr><td>Maxium Intensity:</td></tr>
+	       		<tr><td>115 knots;  132 mph;  213 kph</td></tr></table>]]>
+	       </description>
+	       <styleUrl>#cat4</styleUrl>
+	       <Point>
+	   	   <coordinates>-81.3,23.7,0</coordinates>
+	       </Point>
+	       <lat>23.7</lat>
+	       <lon>-81.3</lon>
+	       <stormName>IRMA</stormName>
+	       <stormNum>11</stormNum>
+	       <basin>AL</basin>
+	       <stormType>HU</stormType>
+	       <intensity>115</intensity>
+	       <intensityMPH>132</intensityMPH>
+	       <intensityKPH>213</intensityKPH>
+	       <minSeaLevelPres>930</minSeaLevelPres>
+	       <atcfdtg>2017091006</atcfdtg>
+	       <dtg>0600 UTC SEP 10</dtg>
+	   </Placemark>
+
+	   <Placemark>
+	      <name>1200 UTC SEP 10</name>
+	      <Snippet maxLines="0">empty</Snippet>
+	      <description>
+	   	  <![CDATA[<table>
+	       		<tr><td>HU IRMA (AL112017)</td></tr>
+	       		<tr><td><hr></td></tr>
+	       		<tr><td>1200 UTC SEP 10</td></tr>
+	       		<tr><td>Storm Location:</td></tr>
+	       		<tr><td> <B>24.5 N, -81.5 W</B> </td></tr>
+	       		<tr><td>Min Sea Level Pressure:</td></tr>
+	       		<tr><td>931 mb; 27.49 in Hg</td></tr>
+	       		<tr><td>Maxium Intensity:</td></tr>
+	       		<tr><td>115 knots;  132 mph;  213 kph</td></tr></table>]]>
+	       </description>
+	       <styleUrl>#cat4</styleUrl>
+	       <Point>
+	   	   <coordinates>-81.5,24.5,0</coordinates>
+	       </Point>
+	       <lat>24.5</lat>
+	       <lon>-81.5</lon>
+	       <stormName>IRMA</stormName>
+	       <stormNum>11</stormNum>
+	       <basin>AL</basin>
+	       <stormType>HU</stormType>
+	       <intensity>115</intensity>
+	       <intensityMPH>132</intensityMPH>
+	       <intensityKPH>213</intensityKPH>
+	       <minSeaLevelPres>931</minSeaLevelPres>
+	       <atcfdtg>2017091012</atcfdtg>
+	       <dtg>1200 UTC SEP 10</dtg>
+	   </Placemark>
+
+	   <Placemark>
+	      <name>1800 UTC SEP 10</name>
+	      <Snippet maxLines="0">empty</Snippet>
+	      <description>
+	   	  <![CDATA[<table>
+	       		<tr><td>HU IRMA (AL112017)</td></tr>
+	       		<tr><td><hr></td></tr>
+	       		<tr><td>1800 UTC SEP 10</td></tr>
+	       		<tr><td>Storm Location:</td></tr>
+	       		<tr><td> <B>25.6 N, -81.7 W</B> </td></tr>
+	       		<tr><td>Min Sea Level Pressure:</td></tr>
+	       		<tr><td>936 mb; 27.64 in Hg</td></tr>
+	       		<tr><td>Maxium Intensity:</td></tr>
+	       		<tr><td>100 knots;  115 mph;  185 kph</td></tr></table>]]>
+	       </description>
+	       <styleUrl>#cat3</styleUrl>
+	       <Point>
+	   	   <coordinates>-81.7,25.6,0</coordinates>
+	       </Point>
+	       <lat>25.6</lat>
+	       <lon>-81.7</lon>
+	       <stormName>IRMA</stormName>
+	       <stormNum>11</stormNum>
+	       <basin>AL</basin>
+	       <stormType>HU</stormType>
+	       <intensity>100</intensity>
+	       <intensityMPH>115</intensityMPH>
+	       <intensityKPH>185</intensityKPH>
+	       <minSeaLevelPres>936</minSeaLevelPres>
+	       <atcfdtg>2017091018</atcfdtg>
+	       <dtg>1800 UTC SEP 10</dtg>
+	   </Placemark>
+
+	   <Placemark>
+	      <name>0000 UTC SEP 11</name>
+	      <Snippet maxLines="0">empty</Snippet>
+	      <description>
+	   	  <![CDATA[<table>
+	       		<tr><td>HU IRMA (AL112017)</td></tr>
+	       		<tr><td><hr></td></tr>
+	       		<tr><td>0000 UTC SEP 11</td></tr>
+	       		<tr><td>Storm Location:</td></tr>
+	       		<tr><td> <B>26.8 N, -81.7 W</B> </td></tr>
+	       		<tr><td>Min Sea Level Pressure:</td></tr>
+	       		<tr><td>942 mb; 27.81 in Hg</td></tr>
+	       		<tr><td>Maxium Intensity:</td></tr>
+	       		<tr><td>90 knots;  104 mph;  167 kph</td></tr></table>]]>
+	       </description>
+	       <styleUrl>#cat2</styleUrl>
+	       <Point>
+	   	   <coordinates>-81.7,26.8,0</coordinates>
+	       </Point>
+	       <lat>26.8</lat>
+	       <lon>-81.7</lon>
+	       <stormName>IRMA</stormName>
+	       <stormNum>11</stormNum>
+	       <basin>AL</basin>
+	       <stormType>HU</stormType>
+	       <intensity>90</intensity>
+	       <intensityMPH>104</intensityMPH>
+	       <intensityKPH>167</intensityKPH>
+	       <minSeaLevelPres>942</minSeaLevelPres>
+	       <atcfdtg>2017091100</atcfdtg>
+	       <dtg>0000 UTC SEP 11</dtg>
+	   </Placemark>
+
+	   <Placemark>
+	      <name>0600 UTC SEP 11</name>
+	      <Snippet maxLines="0">empty</Snippet>
+	      <description>
+	   	  <![CDATA[<table>
+	       		<tr><td>HU IRMA (AL112017)</td></tr>
+	       		<tr><td><hr></td></tr>
+	       		<tr><td>0600 UTC SEP 11</td></tr>
+	       		<tr><td>Storm Location:</td></tr>
+	       		<tr><td> <B>28.2 N, -82.2 W</B> </td></tr>
+	       		<tr><td>Min Sea Level Pressure:</td></tr>
+	       		<tr><td>961 mb; 28.37 in Hg</td></tr>
+	       		<tr><td>Maxium Intensity:</td></tr>
+	       		<tr><td>75 knots;  86 mph;  139 kph</td></tr></table>]]>
+	       </description>
+	       <styleUrl>#cat1</styleUrl>
+	       <Point>
+	   	   <coordinates>-82.2,28.2,0</coordinates>
+	       </Point>
+	       <lat>28.2</lat>
+	       <lon>-82.2</lon>
+	       <stormName>IRMA</stormName>
+	       <stormNum>11</stormNum>
+	       <basin>AL</basin>
+	       <stormType>HU</stormType>
+	       <intensity>75</intensity>
+	       <intensityMPH>86</intensityMPH>
+	       <intensityKPH>139</intensityKPH>
+	       <minSeaLevelPres>961</minSeaLevelPres>
+	       <atcfdtg>2017091106</atcfdtg>
+	       <dtg>0600 UTC SEP 11</dtg>
+	   </Placemark>
+
+	   <Placemark>
+	      <name>1200 UTC SEP 11</name>
+	      <Snippet maxLines="0">empty</Snippet>
+	      <description>
+	   	  <![CDATA[<table>
+	       		<tr><td>TS IRMA (AL112017)</td></tr>
+	       		<tr><td><hr></td></tr>
+	       		<tr><td>1200 UTC SEP 11</td></tr>
+	       		<tr><td>Storm Location:</td></tr>
+	       		<tr><td> <B>29.6 N, -82.7 W</B> </td></tr>
+	       		<tr><td>Min Sea Level Pressure:</td></tr>
+	       		<tr><td>970 mb; 28.64 in Hg</td></tr>
+	       		<tr><td>Maxium Intensity:</td></tr>
+	       		<tr><td>60 knots;  69 mph;  111 kph</td></tr></table>]]>
+	       </description>
+	       <styleUrl>#ts</styleUrl>
+	       <Point>
+	   	   <coordinates>-82.7,29.6,0</coordinates>
+	       </Point>
+	       <lat>29.6</lat>
+	       <lon>-82.7</lon>
+	       <stormName>IRMA</stormName>
+	       <stormNum>11</stormNum>
+	       <basin>AL</basin>
+	       <stormType>TS</stormType>
+	       <intensity>60</intensity>
+	       <intensityMPH>69</intensityMPH>
+	       <intensityKPH>111</intensityKPH>
+	       <minSeaLevelPres>970</minSeaLevelPres>
+	       <atcfdtg>2017091112</atcfdtg>
+	       <dtg>1200 UTC SEP 11</dtg>
+	   </Placemark>
+
+	   <Placemark>
+	      <name>1800 UTC SEP 11</name>
+	      <Snippet maxLines="0">empty</Snippet>
+	      <description>
+	   	  <![CDATA[<table>
+	       		<tr><td>TS IRMA (AL112017)</td></tr>
+	       		<tr><td><hr></td></tr>
+	       		<tr><td>1800 UTC SEP 11</td></tr>
+	       		<tr><td>Storm Location:</td></tr>
+	       		<tr><td> <B>30.9 N, -83.5 W</B> </td></tr>
+	       		<tr><td>Min Sea Level Pressure:</td></tr>
+	       		<tr><td>980 mb; 28.93 in Hg</td></tr>
+	       		<tr><td>Maxium Intensity:</td></tr>
+	       		<tr><td>45 knots;  52 mph;  83 kph</td></tr></table>]]>
+	       </description>
+	       <styleUrl>#ts</styleUrl>
+	       <Point>
+	   	   <coordinates>-83.5,30.9,0</coordinates>
+	       </Point>
+	       <lat>30.9</lat>
+	       <lon>-83.5</lon>
+	       <stormName>IRMA</stormName>
+	       <stormNum>11</stormNum>
+	       <basin>AL</basin>
+	       <stormType>TS</stormType>
+	       <intensity>45</intensity>
+	       <intensityMPH>52</intensityMPH>
+	       <intensityKPH>83</intensityKPH>
+	       <minSeaLevelPres>980</minSeaLevelPres>
+	       <atcfdtg>2017091118</atcfdtg>
+	       <dtg>1800 UTC SEP 11</dtg>
+	   </Placemark>
+
+	   <Placemark>
+	      <name>0000 UTC SEP 12</name>
+	      <Snippet maxLines="0">empty</Snippet>
+	      <description>
+	   	  <![CDATA[<table>
+	       		<tr><td>TS IRMA (AL112017)</td></tr>
+	       		<tr><td><hr></td></tr>
+	       		<tr><td>0000 UTC SEP 12</td></tr>
+	       		<tr><td>Storm Location:</td></tr>
+	       		<tr><td> <B>31.9 N, -84.4 W</B> </td></tr>
+	       		<tr><td>Min Sea Level Pressure:</td></tr>
+	       		<tr><td>986 mb; 29.11 in Hg</td></tr>
+	       		<tr><td>Maxium Intensity:</td></tr>
+	       		<tr><td>40 knots;  46 mph;  74 kph</td></tr></table>]]>
+	       </description>
+	       <styleUrl>#ts</styleUrl>
+	       <Point>
+	   	   <coordinates>-84.4,31.9,0</coordinates>
+	       </Point>
+	       <lat>31.9</lat>
+	       <lon>-84.4</lon>
+	       <stormName>IRMA</stormName>
+	       <stormNum>11</stormNum>
+	       <basin>AL</basin>
+	       <stormType>TS</stormType>
+	       <intensity>40</intensity>
+	       <intensityMPH>46</intensityMPH>
+	       <intensityKPH>74</intensityKPH>
+	       <minSeaLevelPres>986</minSeaLevelPres>
+	       <atcfdtg>2017091200</atcfdtg>
+	       <dtg>0000 UTC SEP 12</dtg>
+	   </Placemark>
+
+        </Folder>
+<Folder>
+<name>Legend</name>
+<open>0</open>
+<visibility>1</visibility>
+<ScreenOverlay>
+<name>Legend</name>
+ <overlayXY x="0" y="1" xunits="fraction" yunits="fraction"/>
+         <screenXY x="0" y="1" xunits="fraction" yunits="fraction"/>
+         <rotationXY x="0.5" y="0.5" xunits="fraction" yunits="fraction"/>
+         <size x="-1" y="-1" xunits="pixels" yunits="pixels"/>
+</ScreenOverlay>
+</Folder>
+</Document>
+</kml>
+

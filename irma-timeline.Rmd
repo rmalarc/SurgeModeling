@@ -1,0 +1,102 @@
+---
+title: "irma-timeline"
+author: "Mauricio Alarcon"
+date: "11/14/2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(rmarkdown) 
+sessionInfo() 
+
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r}
+library(htmlwidgets)
+library(htmltools)
+library(leaflet)
+library(geojsonio)
+
+#Build data.frame with 10 obs + 3 cols
+power <- data.frame(
+    "Latitude" = c(33.515556, 38.060556, 47.903056, 49.71, 49.041667, 31.934167, 54.140586, 54.140586, 48.494444, 48.494444),
+    "Longitude" = c(129.837222, -77.789444, 7.563056, 8.415278, 9.175, -82.343889, 13.664422, 13.664422, 17.681944, 17.681944),
+    "start" = do.call(
+        "as.Date",
+        list(
+            x = c("15-Sep-1971", "1-Dec-1971", "1-Feb-1972", "1-Feb-1972", "1-Feb-1972", "1-Feb-1972", "1-Apr-1972", "1-Apr-1972", "24-Apr-1972", "24-Apr-1972"),
+            format = "%d-%b-%Y"
+        )
+    )
+)
+
+# set start same as end
+#  adjust however you would like
+power$end <- power$start + 30
+
+
+# use geojsonio to convert our data.frame
+#  to GeoJSON which timeline expects
+power_geo <- geojson_json(power,lat="Latitude",lon="Longitude", pretty = T)
+
+# create a leaflet map on which we will build
+leaf <- leaflet() %>%
+    addTiles()
+
+# add leaflet-timeline as a dependency
+#  to get the js and css
+leaf$dependencies[[length(leaf$dependencies)+1]] <- htmlDependency(
+    name = "leaflet-timeline",
+    version = "1.0.0",
+    src = c("href" = "http://skeate.github.io/Leaflet.timeline/"),
+    script = "javascripts/leaflet.timeline.js",
+    stylesheet = "stylesheets/leaflet.timeline.css"
+)
+
+# use the new onRender in htmlwidgets to run
+#  this code once our leaflet map is rendered
+#  I did not spend time perfecting the leaflet-timeline
+#  options
+leaf %>%
+    setView(44.0665,23.74667,2) %>%
+    onRender(sprintf(
+        '
+        function(el,x){
+        var power_data = %s;
+
+        var timelineControl = L.timelineSliderControl({
+          formatOutput: function(date) {
+            return new Date(date).toString();
+          }
+        });
+
+        var timeline = L.timeline(power_data, {
+        pointToLayer: function(data, latlng){
+        var hue_min = 120;
+        var hue_max = 0;
+        var hue = hue_min;
+        return L.circleMarker(latlng, {
+        radius: 10,
+        color: "hsl("+hue+", 100%%, 50%%)",
+        fillColor: "hsl("+hue+", 100%%, 50%%)"
+        });
+        },
+        steps: 1000,
+        duration: 10000,
+        showTicks: true
+        });
+        timelineControl.addTo(HTMLWidgets.find(".leaflet").getMap());
+        timelineControl.addTimelines(timeline);
+        timeline.addTo(HTMLWidgets.find(".leaflet").getMap());
+        }
+        ',
+        power_geo
+    ))
+```
+
